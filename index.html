@@ -288,5 +288,42 @@ DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 -->
+<script>
+// Reserve each scene's expanded height so hover never moves later titles.
+(() => {
+ const list = document.querySelector('.scene-list');
+ const log = document.querySelector('#life-log');
+ if (!list || !log) return;
+ const scenes = [...list.querySelectorAll('.scene')];
+ function reserveSceneSpace() {
+  if (!log.open || !list.getBoundingClientRect().width) return;
+  scenes.forEach(scene => {
+   if (scene.parentElement.hidden) return;
+   const probe = scene.cloneNode(true);
+   probe.removeAttribute('id');
+   probe.open = true;
+   probe.setAttribute('aria-hidden', 'true');
+   probe.inert = true;
+   Object.assign(probe.style, {
+    position: 'absolute', visibility: 'hidden', pointerEvents: 'none',
+    width: scene.getBoundingClientRect().width + 'px', minHeight: '0',
+    height: 'auto', left: '0', top: '0'
+   });
+   scene.parentElement.append(probe);
+   const height = Math.ceil(probe.getBoundingClientRect().height);
+   probe.remove();
+   scene.style.minHeight = height + 'px';
+  });
+ }
+ log.addEventListener('toggle', reserveSceneSpace);
+ if ('ResizeObserver' in window) new ResizeObserver(reserveSceneSpace).observe(list);
+ new MutationObserver(reserveSceneSpace).observe(list, {
+  subtree: true, attributes: true, attributeFilter: ['hidden']
+ });
+ document.fonts.ready.then(reserveSceneSpace);
+ window.addEventListener('resize', reserveSceneSpace);
+ reserveSceneSpace();
+})();
+</script>
 </body>
 </html>
