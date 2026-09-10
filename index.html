@@ -133,7 +133,7 @@ const states=[];
 document.querySelectorAll('.scene:not(.logs)').forEach(details=>{
  const summary=details.querySelector('summary'),content=details.querySelector('.content');
  const s={details,summary,pinned:false,wanted:false,hovered:false,timer:0,animation:null};states.push(s);
- s.setOpen=open=>{if(open===s.wanted)return;s.wanted=open;const style=details.open?getComputedStyle(content):null;const fromOpacity=style?style.opacity:'0',fromTransform=style?style.transform:'translateX(20px)';s.animation?.cancel();if(open){states.forEach(other=>{if(other!==s&&other.wanted){other.pinned=false;other.setOpen(false)}});details.open=true}if(reduce.matches||!content.animate){details.open=open;return}const anim=content.animate([{opacity:fromOpacity,transform:fromTransform},{opacity:open?1:0,transform:open?'translateX(0)':'translateX(20px)'}],{duration:open?340:240,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});s.animation=anim;anim.onfinish=()=>{details.open=s.wanted;anim.cancel();s.animation=null}};
+ s.setOpen=open=>{if(open===s.wanted)return;s.wanted=open;const style=details.open?getComputedStyle(content):null;const fromOpacity=style?style.opacity:'0',fromTransform=style?style.transform:'translateX(20px)';s.animation?.cancel();if(open){states.forEach(other=>{if(other!==s&&other.wanted&&!other.pinned){other.setOpen(false)}});details.open=true}if(reduce.matches||!content.animate){details.open=open;return}const anim=content.animate([{opacity:fromOpacity,transform:fromTransform},{opacity:open?1:0,transform:open?'translateX(0)':'translateX(20px)'}],{duration:open?340:240,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});s.animation=anim;anim.onfinish=()=>{details.open=s.wanted;anim.cancel();s.animation=null}};
  const close=()=>{clearTimeout(s.timer);s.timer=setTimeout(()=>{if(!s.pinned&&!s.hovered&&!details.contains(document.activeElement))s.setOpen(false)},150)};
  summary.addEventListener('click',e=>{e.preventDefault();clearTimeout(s.timer);s.pinned=!s.pinned;s.setOpen(s.pinned)});
  details.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||!fine.matches)return;s.hovered=true;clearTimeout(s.timer);s.timer=setTimeout(()=>s.setOpen(true),180)});
@@ -157,8 +157,15 @@ panel.addEventListener('cancel',e=>{e.preventDefault();closePanel()});
 panel.addEventListener('close',()=>{panel.classList.remove('open');trigger.setAttribute('aria-expanded','false');trigger.focus()});
 panel.addEventListener('click',e=>{const r=panel.getBoundingClientRect();if(e.target===panel&&(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom))closePanel()});
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!panel.open&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!e.target.closest('input,textarea,select,[contenteditable]')){e.preventDefault();input.focus();showOptions(true)}if(e.key==='Escape'&&!panel.open){if(!options.hidden){showOptions(false);return}states.forEach(s=>{clearTimeout(s.timer);s.pinned=false;s.setOpen(false)})}});
-const graphWrap=document.querySelector('.graph-wrap'),graphTip=document.querySelector('#graph-tooltip');
-if(graphWrap&&graphTip){
+const graphWrap=document.querySelector('.graph-wrap'),graphTip=document.querySelector('#graph-tooltip');if(graphWrap&&graphTip){
+ graphTip.style.pointerEvents='auto';
+ document.addEventListener('pointerdown',e=>{
+  if(e.target.closest('.graph-hit[data-scene]'))return;
+  graphTip.hidden=true;
+  const focused=document.activeElement;
+  if(focused?.matches('.graph-hit'))focused.blur();
+ });
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')graphTip.hidden=true});
  const dots=[...document.querySelectorAll('.graph-dot')];
  document.querySelectorAll('.graph-hit').forEach((hit,i)=>{
   const dot=dots[i];
@@ -185,6 +192,7 @@ if(graphWrap&&graphTip){
   const hide=()=>{graphTip.hidden=true};
   hit.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse'||!fine.matches)return;show()});
   hit.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hide()});
+  hit.addEventListener('click',show);
   hit.addEventListener('focus',show);
   hit.addEventListener('blur',hide);
  });
