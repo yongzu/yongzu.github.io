@@ -22,6 +22,21 @@ html{scrollbar-gutter:stable}body{display:flex;flex-direction:column;min-height:
 @media(max-width:700px){.archive-footer{padding:40px 24px}.scene-list .scene[open]{display:block}.scene-list .scene[open]>summary{width:fit-content}.scene-list .scene[open] .copy{padding:8px 0 20px 24px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
+/* Self Q&A */
+.self-qa{margin-top:25px;margin-bottom:85px}
+.qa-list{list-style:none;padding:20px 0 20px 28px;margin:0}
+.qa-list .scene[open]{display:grid;grid-template-columns:190px minmax(0,410px);column-gap:20px;align-items:start}
+.qa-list .scene[open]>summary{width:auto}
+.qa-list .scene[open] .copy{padding:2px 0 22px}
+.qa-question{color:#333;font-size:12pt;font-weight:500;line-height:1.5}
+.qa-answer{color:#555;font-size:12pt;line-height:1.7}
+@media(max-width:700px){
+ .self-qa{margin-bottom:56px}
+ .qa-list .scene[open]{display:block}
+ .qa-list .scene[open]>summary{width:fit-content}
+ .qa-list .scene[open] .copy{padding:8px 0 24px 24px}
+}
+
 </style>
 </head>
 <body>
@@ -109,12 +124,48 @@ html{scrollbar-gutter:stable}body{display:flex;flex-direction:column;min-height:
 <details class="scene logs" id="versions"><summary class="scene-title"><span class="log-sign" aria-hidden="true"><img class="log-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAelJREFUeAHt3MGN1EAURdEHmj1kQBEBZIAzAUIgAzIghJ4QyGAcAhnQkwEZgEvMEhZ+LVnXo3ukv2x1y1eqxe+Sk/MY2/wu501O4mWEYhAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGATGIDB32zyk82WbH9G/vN/mWwozyJLOq+h/Xqd8rh5ZMAaBMQiMQWAMAmMQGIPAGATGIDAGgTEIjEFg5nLxPp1lm7fZ77rNmnNY8vdOceM+B5tr++bi8yWdkeMvW1/K73tIySMLxiAwBoExCIxBYAwCYxAYg8AYBMYgMAaBMQjMXXrXp2mM7DfSm1vpF+lcs9+vnMin9Fvbo+djDuaRBWMQGIPAGATGIDAGgTEIjEFgDAJjEBiDwBgExiAwt6zfv2/zLvut6dfvazpLujX616fZa93mcwq3BJmv1hjpPGa/9v+M6Vp+5zSy30jJIwvGIDAGgTEIjEFgDAJjEBiDwBgExiAwBoExCMxc2F3SWdN5LD87tvmZzki3XFzSvQVi5IYFY3sR+UOONXL8qzVaS8rf6pEFYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGARmXiVd0znV6yMONp/Nmmdu5Dzb3ppHFoxBYAwCYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPA/AHpU7oMpiv2OQAAAABJRU5ErkJggg==" alt="" width="18" height="18"></span><span class="scene-label">버전 로그</span></summary>
 <div class="content">
 <ul class="version-list" aria-label="버전 기록">
+<li><details class="scene" id="v2"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">v2</span></summary><div class="content"><div class="copy">
+<p>2026.09.20</p><p>구성 — 하단에 자문자답 탭과 질문 1–5를 추가.</p><p>인터랙션 — 각 질문을 독립적으로 펼쳐 읽는 아코디언 구조.</p>
+</div></div></details></li>
 <li><details class="scene" id="v1"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">v1</span></summary><div class="content"><div class="copy">
 <p>2026.09.10</p><p>의도 — 극한으로 미니멀하게끔. 라이팅은 재치있게.</p><p>구성 — 접힌 log 목록, 제공 이미지, 시기·대상별 검색, 프로필 패널.</p><p>인터랙션 — 검색창 호버 배경과 클릭 시 검색 옵션. log의 점은 화살표로, 장면 앞에는 점을 표시.</p><p>글꼴 — 본문 Pretendard 12pt, 검색창과 프로필 10pt.</p>
 </div></div></details></li>
 </ul>
 </div>
 </details>
+<details class="log-section self-qa" id="self-qa">
+<summary class="log-title"><span class="log-sign" aria-hidden="true"><img class="log-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAelJREFUeAHt3MGN1EAURdEHmj1kQBEBZIAzAUIgAzIghJ4QyGAcAhnQkwEZgEvMEhZ+LVnXo3ukv2x1y1eqxe+Sk/MY2/wu501O4mWEYhAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGATGIDB32zyk82WbH9G/vN/mWwozyJLOq+h/Xqd8rh5ZMAaBMQiMQWAMAmMQGIPAGATGIDAGgTEIjEFg5nLxPp1lm7fZ77rNmnNY8vdOceM+B5tr++bi8yWdkeMvW1/K73tIySMLxiAwBoExCIxBYAwCYxAYg8AYBMYgMAaBMQjMXXrXp2mM7DfSm1vpF+lcs9+vnMin9Fvbo+djDuaRBWMQGIPAGATGIDAGgTEIjEFgDAJjEBiDwBgExiAwt6zfv2/zLvut6dfvazpLujX616fZa93mcwq3BJmv1hjpPGa/9v+M6Vp+5zSy30jJIwvGIDAGgTEIjEFgDAJjEBiDwBgExiAwBoExCMxc2F3SWdN5LD87tvmZzki3XFzSvQVi5IYFY3sR+UOONXL8qzVaS8rf6pEFYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGARmXiVd0znV6yMONp/Nmmdu5Dzb3ppHFoxBYAwCYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPA/AHpU7oMpiv2OQAAAABJRU5ErkJggg==" alt="" width="18" height="18"></span><span>자문자답</span></summary>
+<div class="content">
+<ul class="qa-list" aria-label="조용주의 자문자답">
+<li><details class="scene" id="question-1"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">질문 1</span></summary><div class="content"><div class="copy">
+<p class="qa-question">조용주는 어떤 사람인가?</p>
+<p class="qa-answer">약간 마이너한 감성을 가지고 있다. 인스타그램 알고리즘이 남들과는 약간 다를지도 모른다. 친구나 후배들은 항상 미쳤다고 한다. 이상한 마이너라기보다 웃긴 것을 좋아한다고 해야 하나. 릴스를 하도 보다 보니 인터넷 밈은 거의 알고 있다. 그렇다고 온라인 커뮤니티를 하는 것은 아니니 오해하지 말기 바란다.</p>
+<p class="qa-answer">나만의 취향과 미감이 있다. 대학생 때는 한창 고프코어와 테크웨어에 빠져 닌자처럼 하고 다니기도 했다. 디자인을 보는 눈은 많이 높지만 실제로 구현하는 실력이 따라가지 못할 때가 많다. 그리고 현재 신체적으로 풍족하다. 군대에 다녀와서는 65kg이었는데 지금은…</p>
+</div></div></details></li>
+<li><details class="scene" id="question-2"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">질문 2</span></summary><div class="content"><div class="copy">
+<p class="qa-question">조용주의 하루는 어떻게 구성되는가?</p>
+<p class="qa-answer">일단 힘겹게 아침에 일어나 Phi Design Institute로 등원한다. 나름 열심히 들을 때도 있고, 종종 집중이 안 될 때도 있다. 점심은 주로 편의점 음식으로 처리한다. 아무튼 학원이 끝나면 학습을 잘 갈무리한다.</p>
+<p class="qa-answer">다이어트해야겠다고 생각하면서도 막상 운동을 자주 하지는 않지만, 어제는 러닝을 했다. 집으로 가서는 친구들과 스팀 게임을 하며 스트레스를 푼다. 학원에서 열심히 한 것에 대한 보상 심리로 계속 자유 시간을 가지다가 수면 시간이 점차 늦어지고… 다음 날 다시 힘겹게 일어난다.</p>
+</div></div></details></li>
+<li><details class="scene" id="question-3"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">질문 3</span></summary><div class="content"><div class="copy">
+<p class="qa-question">조용주는 여자친구가 있는가?</p>
+<p class="qa-answer">있다. 내 배경 화면이 여자친구인데, 창균이 형(Phi 동료 학습자)이 거짓말치지 말라고 했다. 그 정도로 예쁜데, 이 질문은 그냥 자랑하고 싶어서 올린다.</p>
+</div></div></details></li>
+<li><details class="scene" id="question-4"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">질문 4</span></summary><div class="content"><div class="copy">
+<p class="qa-question">조용주는 어떤 애니메이션을 가장 좋아하는가?</p>
+<p class="qa-answer">사이버펑크: 엣지러너. 배경, 캐릭터, 작화, 스토리 모두 너무 재미있는 애니메이션이다. 피상적으로 보면 그냥 SF 액션물 같기도 하지만—이 부분만으로도 가치가 있다—실제로는 철학적 메시지도 담고 있다.</p>
+<p class="qa-answer">신체의 상품화와 인간성의 상실, 타인의 꿈과 자율성, 하이테크·로우라이프와 거대 자본의 폭력 등. 아무튼 미친 애니메이션이고, 10월에 나올 시즌 2가 기대된다.</p>
+</div></div></details></li>
+<li><details class="scene" id="question-5"><summary class="scene-title"><span class="bullet" aria-hidden="true"></span><span class="scene-label">질문 5</span></summary><div class="content"><div class="copy">
+<p class="qa-question">AI가 조용주의 일자리를 위협하는가?</p>
+<p class="qa-answer">요즘 AI를 자신의 일자리를 위협하는 도구라고 보는 경향이 많은 것 같다. 반쯤 맞는 말일 수도 있지만, 이를 잘 활용하면 자신의 능력을 몇 배로 늘릴 수 있는 미친 유용성을 가진 도구이기도 하다.</p>
+<p class="qa-answer">나는 개발 지식이 전혀 없지만 지금 이 페이지를 포함해 세 개의 페이지를 디자인하고 공개 링크로 배포했다. 일회성 링크가 아니라 계속 유지·보수해 나갈 수 있는 주소다. 다만 역설적으로 도메인 지식의 중요성도 커졌다. 해당 분야에 대한 지식이 있는 사람은 AI를 훨씬 더 능숙하고 고차원적으로 활용할 수 있기 때문이다.</p>
+<p class="qa-answer">결국 수동으로 작업하는 능력과 지식, AI 활용 능력을 모두 개발해야 한다고 생각한다. 그렇게 된다면 대체되지는 않을 것 같기도?</p>
+</div></div></details></li>
+</ul>
+</div>
+</details>
+
 </main>
 <footer class="archive-footer">
 <div class="footer-identity">
