@@ -96,6 +96,10 @@ main{flex:1;margin:62px 0 160px}
 .qa-image{grid-column:2;grid-row:1;position:relative;width:100%;aspect-ratio:var(--qa-ratio);margin:18px 0 38px;overflow:hidden;background:#f2f2f2}
 .qa-image img{display:block;width:100%;height:100%;object-fit:cover}
 .story .copy{line-height:1.85}
+.interview-meta{margin:0;padding:20px 0 0 28px;color:var(--faint)}
+.interview .qa-list{padding-top:8px}
+.copy .qa-follow{margin-top:24px;color:var(--ink);line-height:1.7}.qa-follow span{margin-right:8px;color:var(--faint)}
+.qa-note{color:var(--faint);line-height:1.7}
 
 /* 버전 로그 */
 .version-list .copy{padding:8px 0 30px}
@@ -152,6 +156,7 @@ main{flex:1;margin:62px 0 160px}
  .scene-list .row-panel{transition:grid-template-rows 480ms var(--ease-reveal)}
  .scene-list .copy{padding:6px 0 20px 24px}
  .qa-list .copy{padding:14px 0 30px 24px}
+ .interview-meta{padding-left:24px}
  .qa-image{order:2;width:min(calc(100% - 24px),320px);margin:0 0 28px 24px}
  .version-list .copy{padding:8px 0 24px 24px}
  .log-section.versions{margin-top:56px}
@@ -182,7 +187,7 @@ main{flex:1;margin:62px 0 160px}
 <main id="top">
 <header class="identity page"><p>Self Introduce</p><h1><span class="slash">/</span>용주 조</h1></header>
 <div class="page-shell">
-<div class="toc-rail"><nav class="toc" aria-label="페이지 목차"><span class="toc-bar" aria-hidden="true"></span><ol><li><a href="#life-log">log</a></li><li><a href="#life-graph">graph</a></li><li><a href="#self-qa">자문자답</a></li><li><a href="#short-story">단편 소설</a></li><li><a href="#versions">버전 로그</a></li></ol></nav></div>
+<div class="toc-rail"><nav class="toc" aria-label="페이지 목차"><span class="toc-bar" aria-hidden="true"></span><ol><li><a href="#life-log">log</a></li><li><a href="#life-graph">graph</a></li><li><a href="#self-qa">자문자답</a></li><li><a href="#short-story">단편 소설</a></li><li><a href="#interview">인터뷰</a></li><li><a href="#versions">버전 로그</a></li></ol></nav></div>
 <div class="page page-grid">
 <div class="sections">
 <section class="log-section" id="life-log" aria-labelledby="life-log-title" data-open="false">
@@ -313,6 +318,46 @@ main{flex:1;margin:62px 0 160px}
 </div>
 </div></div>
 </section>
+<section class="log-section interview" id="interview" aria-labelledby="interview-title" data-open="false">
+<h2 class="log-title" id="interview-title"><button type="button" class="section-toggle" aria-expanded="false" aria-controls="interview-body"><span class="log-sign" aria-hidden="true"><img class="log-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAelJREFUeAHt3MGN1EAURdEHmj1kQBEBZIAzAUIgAzIghJ4QyGAcAhnQkwEZgEvMEhZ+LVnXo3ukv2x1y1eqxe+Sk/MY2/wu501O4mWEYhAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGATGIDB32zyk82WbH9G/vN/mWwozyJLOq+h/Xqd8rh5ZMAaBMQiMQWAMAmMQGIPAGATGIDAGgTEIjEFg5nLxPp1lm7fZ77rNmnNY8vdOceM+B5tr++bi8yWdkeMvW1/K73tIySMLxiAwBoExCIxBYAwCYxAYg8AYBMYgMAaBMQjMXXrXp2mM7DfSm1vpF+lcs9+vnMin9Fvbo+djDuaRBWMQGIPAGATGIDAGgTEIjEFgDAJjEBiDwBgExiAwt6zfv2/zLvut6dfvazpLujX616fZa93mcwq3BJmv1hjpPGa/9v+M6Vp+5zSy30jJIwvGIDAGgTEIjEFgDAJjEBiDwBgExiAwBoExCMxc2F3SWdN5LD87tvmZzki3XFzSvQVi5IYFY3sR+UOONXL8qzVaS8rf6pEFYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGARmXiVd0znV6yMONp/Nmmdu5Dzb3ppHFoxBYAwCYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPA/AHpU7oMpiv2OQAAAABJRU5ErkJggg==" alt="" width="18" height="18"></span><span>인터뷰</span></button></h2>
+<div class="section-body" id="interview-body" role="region" aria-labelledby="interview-title"><div class="section-clip"><div class="content">
+<p class="interview-meta">인터뷰어 조용주 · 인터뷰이 한희안 · 2026.09.29</p>
+<ul class="qa-list" aria-label="한희안과의 인터뷰">
+<li class="row" id="interview-1"><button type="button" class="row-title" aria-expanded="false" aria-controls="interview-1-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">질문 1. 조용주는 어떤 사람인가요?</span></button><div class="row-panel" id="interview-1-panel" role="region" aria-label="질문 1. 조용주는 어떤 사람인가요?"><div class="row-clip"><div class="copy">
+<p class="qa-answer">복잡해 보이는데 엄청 단순한 사람이에요. 생각이 짧은 건 아닌데, 은근히 생각이 단순해요.</p>
+<p class="qa-answer">생각보다 냉혈한인데, 남을 생각하는 데 있어서는 생각보다 따뜻해요. 두 모습을 다 가진, 이중적인 사람입니다.</p>
+</div></div></div></li>
+<li class="row" id="interview-2"><button type="button" class="row-title" aria-expanded="false" aria-controls="interview-2-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">질문 2. 저의 첫인상은 어땠나요?</span></button><div class="row-panel" id="interview-2-panel" role="region" aria-label="질문 2. 저의 첫인상은 어땠나요?"><div class="row-clip"><div class="copy">
+<p class="qa-answer">처음 만났을 때는 잘 기억이 안 나요. 슬슬 친해질 무렵의 인상을 말하자면, 엄청 유쾌했어요.</p>
+<p class="qa-answer">술자리나 사람들 모이는 걸 좋아하고, 장난치고 드립 치는 걸 좋아하는 사람이었어요.</p>
+</div></div></div></li>
+<li class="row" id="interview-3"><button type="button" class="row-title" aria-expanded="false" aria-controls="interview-3-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">질문 3. 저의 가장 큰 장점과 고쳤으면 하는 점은?</span></button><div class="row-panel" id="interview-3-panel" role="region" aria-label="질문 3. 저의 가장 큰 장점과 고쳤으면 하는 점은?"><div class="row-clip"><div class="copy">
+<p class="qa-answer">장점 — 할 얘기가 많아요. 눈치가 정말 빠른데, 그 눈치로 남을 챙겨요. 선을 조절하는 능력이 굉장히 좋아서, 아슬아슬해도 절대 넘지 않고 재밌고 유쾌하게 넘어가요.</p>
+<p class="qa-answer">단점 — 그 선에 굳이 다가갈 필요가 없을 때도 있어요. 친한 사람은 성격을 아니까 “또 아무 생각 없이 얘기했네” 하고 넘기지만, 친하지 않은 사람은 “왜 나한테 이런 얘기를 하지?” 싶을 수 있어요.</p>
+<p class="qa-answer">누구와도 편하게 얘기하고 앞뒤가 다르지 않은 사람이라서, 친해도 상처를 잘 받는 친구들은 상처받을 수 있겠다는 생각이 들었어요. 그래도 선을 오가기는 하지만 절대 넘지는 않아요.</p>
+</div></div></div></li>
+<li class="row" id="interview-4"><button type="button" class="row-title" aria-expanded="false" aria-controls="interview-4-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">질문 4. 저랑 평생 친구 하실 건가요?</span></button><div class="row-panel" id="interview-4-panel" role="region" aria-label="질문 4. 저랑 평생 친구 하실 건가요?"><div class="row-clip"><div class="copy">
+<p class="qa-answer">기회가 된다면요. 외부 상황이든 내부 상황이든 그 기회가 박탈될 수는 있다고 생각해요. 이건 제가 정할 수 있는 게 아니잖아요.</p>
+<p class="qa-note">원래 질문은 “나와 평생 친구를 해야겠다고 느낀 사건이 있나요?”였다. 이 답을 듣고 다음 질문으로 넘어갔다.</p>
+</div></div></div></li>
+<li class="row" id="interview-5"><button type="button" class="row-title" aria-expanded="false" aria-controls="interview-5-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">질문 5. 5년 뒤 저는 어떤 모습일까요?</span></button><div class="row-panel" id="interview-5-panel" role="region" aria-label="질문 5. 5년 뒤 저는 어떤 모습일까요?"><div class="row-clip"><div class="copy">
+<p class="qa-answer">디자이너로서 자기에게 잘 맞는 분야의 디자인을 하고 있을 것 같아요. 생각보다 직장이 잘 맞아서, 한 직장에 만족하며 다니고 있을 것 같아요.</p>
+<p class="qa-answer">안정감에서 안정을 얻는 사람이라서, 다른 감정을 느끼는 사람들을 이해는 하지만 본인은 “지금도 충분히 괜찮은데 굳이?”라고 생각할 것 같아요. 그렇게 스택을 쌓아 직장 안에서 잘 되는 쪽으로 가 있을 것 같아요.</p>
+<p class="qa-follow"><span>추가 질문</span>불안해하거나 창업하고 싶어 하는 상태는 아닐 거라는 거지?</p>
+<p class="qa-answer">그 안에서 최선으로 가기 위해 노력하고 있을 거예요.</p>
+<p class="qa-follow"><span>추가 질문</span>기범이 형은 길게 봐도 2년이면 직장 못 다닌다던데?</p>
+<p class="qa-answer">아니에요. 그 직장이 마음에 든다는 가정하에, 안정감에서 오는 게 있을 것 같아요.</p>
+</div></div></div></li>
+<li class="row" id="interview-6"><button type="button" class="row-title" aria-expanded="false" aria-controls="interview-6-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">질문 6. 팀 프로젝트에서 저는 어떤 팀원인가요?</span></button><div class="row-panel" id="interview-6-panel" role="region" aria-label="질문 6. 팀 프로젝트에서 저는 어떤 팀원인가요?"><div class="row-clip"><div class="copy">
+<p class="qa-note">장점과 단점을 함께 물었지만, 단점은 인터뷰어가 먼저 답했다. 압박을 견디지 못하고 탈주해버린다.</p>
+<p class="qa-answer">꼭 필요한 순간에 객관적인 시선으로 “왜?”라는 질문을 던져줘요. 쉽게 넘어갈 수 있는 부분을 한 번씩 다시 되짚어 보게 만들어요.</p>
+<p class="qa-answer">그리고 프로젝트의 현재 상황을 객관적으로 봐요.</p>
+</div></div></div></li>
+</ul>
+</div>
+</div></div>
+</section>
+
 <section class="log-section versions" id="versions" aria-labelledby="versions-title" data-open="false">
 <h2 class="log-title" id="versions-title"><button type="button" class="section-toggle" aria-expanded="false" aria-controls="versions-body"><span class="log-sign" aria-hidden="true"><img class="log-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAelJREFUeAHt3MGN1EAURdEHmj1kQBEBZIAzAUIgAzIghJ4QyGAcAhnQkwEZgEvMEhZ+LVnXo3ukv2x1y1eqxe+Sk/MY2/wu501O4mWEYhAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGATGIDB32zyk82WbH9G/vN/mWwozyJLOq+h/Xqd8rh5ZMAaBMQiMQWAMAmMQGIPAGATGIDAGgTEIjEFg5nLxPp1lm7fZ77rNmnNY8vdOceM+B5tr++bi8yWdkeMvW1/K73tIySMLxiAwBoExCIxBYAwCYxAYg8AYBMYgMAaBMQjMXXrXp2mM7DfSm1vpF+lcs9+vnMin9Fvbo+djDuaRBWMQGIPAGATGIDAGgTEIjEFgDAJjEBiDwBgExiAwt6zfv2/zLvut6dfvazpLujX616fZa93mcwq3BJmv1hjpPGa/9v+M6Vp+5zSy30jJIwvGIDAGgTEIjEFgDAJjEBiDwBgExiAwBoExCMxc2F3SWdN5LD87tvmZzki3XFzSvQVi5IYFY3sR+UOONXL8qzVaS8rf6pEFYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGARmXiVd0znV6yMONp/Nmmdu5Dzb3ppHFoxBYAwCYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPA/AHpU7oMpiv2OQAAAABJRU5ErkJggg==" alt="" width="18" height="18"></span><span>버전 로그</span></button></h2>
 <div class="section-body" id="versions-body" role="region" aria-labelledby="versions-title"><div class="section-clip"><div class="content">
@@ -325,7 +370,10 @@ main{flex:1;margin:62px 0 160px}
 </div></div></div></li>
 <li class="row" id="v3"><button type="button" class="row-title" aria-expanded="false" aria-controls="v3-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">v3</span></button><div class="row-panel" id="v3-panel" role="region" aria-label="v3"><div class="row-clip"><div class="copy">
 <p>조용주에 대한 단편소설 추가</p><p>BI 페이지의 부드러운 스크롤 적용</p><p>섹션을 펼친 구성으로 바꾸고 왼쪽 목차 추가</p><p>항목은 호버로 미리보기, 클릭으로 고정</p><p>2026.09.26</p>
-</div></div></li>
+</div></div></div></li>
+<li class="row" id="v4"><button type="button" class="row-title" aria-expanded="false" aria-controls="v4-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">v4</span></button><div class="row-panel" id="v4-panel" role="region" aria-label="v4"><div class="row-clip"><div class="copy">
+<p>단편 소설 아래에 인터뷰 추가 — 한희안이 답한 질문 1–6</p><p>2026.10.01</p>
+</div></div></div></li>
 </ul>
 </div>
 </div></div>
