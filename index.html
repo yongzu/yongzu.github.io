@@ -27,8 +27,8 @@ html.lenis,html.lenis body{height:auto}.lenis:not(.lenis-autoToggle).lenis-stopp
 /* Page */
 main{flex:1;margin:62px 0 160px}
 .page{width:min(1194px,calc(100% - 64px));margin-inline:auto}
-/* With the table of contents showing, content starts where the old 1194px page began (never under the TOC) and is only as wide as a list row */
-@media(min-width:1001px){.page{width:auto;max-width:calc(28px + var(--title-w) + var(--col-gap) + var(--body-w));margin-left:max(240px,(100% - 1194px) / 2);margin-right:32px}}
+/* With the table of contents showing, the page is only as wide as a list row and sits centered, but never under the TOC */
+@media(min-width:1001px){.page{--page-w:calc(28px + var(--title-w) + var(--col-gap) + var(--body-w));width:auto;max-width:var(--page-w);margin-left:max(240px,(100% - var(--page-w)) / 2);margin-right:32px}}
 .identity h1{color:var(--ink);white-space:nowrap}.identity h1 .slash{padding-right:14px}
 .page-shell{position:relative;margin-top:85px}
 
