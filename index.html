@@ -67,7 +67,7 @@ main{flex:1;margin:62px 0 160px}
 .row-title{position:relative;display:flex;align-items:center;gap:10px;min-height:40px;padding:5px 0;width:fit-content;max-width:calc(var(--tab-w) - 10px);color:var(--muted);transition:transform 340ms var(--ease-move),color 260ms}
 .row-title:hover,.row-title:focus-visible,.row[data-open="true"]>.row-title{color:var(--ink);transform:translateX(10px)}
 .row-label{position:relative;margin-left:2px;word-break:keep-all}
-.row-label::before{content:'';position:absolute;inset:-4px -8px;border-radius:10px;background:#fff;box-shadow:0 10px 30px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);opacity:0;transition:opacity 200ms;z-index:-1;pointer-events:none}
+.row-label::before{content:'';position:absolute;inset:-4px -8px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.03);opacity:0;transition:opacity 200ms;z-index:-1;pointer-events:none}
 .row-title:hover .row-label::before,.row-title:focus-visible .row-label::before,.row[data-open="true"]>.row-title .row-label::before{opacity:1}
 .bullet{width:14px;flex:0 0 14px;position:relative;align-self:center}
 .bullet::before{content:'';position:absolute;left:4px;top:50%;transform:translateY(-50%);display:block;width:5px;height:5px;background:#444;border-radius:50%;transition:opacity 260ms}
@@ -91,6 +91,7 @@ main{flex:1;margin:62px 0 160px}
 /* 자문자답 · 단편 소설 */
 .qa-list .row-title{min-height:52px;padding:10px 0}
 .qa-list .row-label::before{inset:-9px -15px;border-radius:12px}
+.self-qa .row-label,.interview .row-label{margin-left:14px}
 .qa-list .copy{padding:18px 0 38px}
 .qa-answer{color:var(--text);line-height:1.7}
 .qa-image{grid-column:2;grid-row:1;position:relative;width:100%;aspect-ratio:var(--qa-ratio);margin:18px 0 38px;overflow:hidden;background:#f2f2f2}
@@ -106,7 +107,7 @@ main{flex:1;margin:62px 0 160px}
 
 /* graph */
 .graph-wrap{position:relative;padding:20px 0 0}.graph-intro{margin:0 0 22px;line-height:1.5}.graph-title{margin:0 0 6px;color:var(--ink)}.graph-desc{margin:0 0 8px;color:var(--muted);word-break:keep-all}.graph-meta{margin:0;color:var(--faint);opacity:.55}.graph-caption{margin:0 0 14px;color:var(--faint);font-size:10pt}.graph-footnote{margin:14px 0 0;color:var(--faint);font-size:10pt;text-align:right}.graph-chart{display:block;width:100%;height:auto;overflow:visible}.grid-line{stroke:#ededed;stroke-width:1}.grid-label{fill:#aaa;font-size:13.3px;font-family:Pretendard,sans-serif}.axis-label{fill:#777;font-size:13.3px;font-family:Pretendard,sans-serif}.graph-line{fill:none;stroke:#c4c4c4;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.graph-line-dash{stroke-dasharray:3 4}.graph-dot{fill:#fff;stroke:#999;stroke-width:2;transition:r 160ms}.graph-dot-open{stroke:#333}.graph-hit{fill:transparent;cursor:pointer;outline:none}
-.graph-tooltip{position:absolute;z-index:10;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.12),0 2px 8px rgba(0,0,0,.06);padding:10px 14px;width:max-content;max-width:220px;color:var(--text)}.graph-tooltip p{margin:0;word-break:keep-all;font-size:10pt}.graph-tooltip p+p{margin-top:6px}.graph-tooltip p.graph-tooltip-title{margin:0 0 4px;color:var(--ink);font-size:12pt}
+.graph-tooltip{position:absolute;z-index:10;background:#fff;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.03);padding:10px 14px;width:max-content;max-width:220px;color:var(--text)}.graph-tooltip p{margin:0;word-break:keep-all;font-size:10pt}.graph-tooltip p+p{margin-top:6px}.graph-tooltip p.graph-tooltip-title{margin:0 0 4px;color:var(--ink);font-size:12pt}
 
 /* Scroll reveal — blocks rise 40px and fade in as they enter, staggered per batch */
 .has-reveal :is(.identity>*,.log-title,.row,.graph-wrap){transition:opacity 1s var(--ease-reveal) var(--reveal-delay,0ms),transform 1s var(--ease-reveal) var(--reveal-delay,0ms),border-color 200ms}
