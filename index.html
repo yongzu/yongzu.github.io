@@ -20,9 +20,11 @@ button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-vi
 html.lenis,html.lenis body{height:auto}.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}.lenis [data-lenis-prevent]{overscroll-behavior:contain}
 
 /* Toolbar — stays on top while the page glides underneath */
-/* No bar of its own: only the logo and the profile button stay pinned, and the page under the rest of it stays clickable */
-.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:20px;padding:25px 32px;min-height:var(--header-h);background:transparent;pointer-events:none}
+/* No bar of its own: only the logo and the profile button stay pinned, and the page under the rest of it stays clickable.
+   The icons are drawn white and blended by difference, so they read black on white and flip to white over dark images as they scroll by */
+.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:20px;padding:25px 32px;min-height:var(--header-h);background:transparent;pointer-events:none;mix-blend-mode:difference}
 .toolbar>*{pointer-events:auto}
+.toolbar img{filter:invert(1)}
 .brand{display:flex;align-items:center;flex-shrink:0}.brand img{display:block;width:auto;height:27px;object-fit:contain}
 .profile-button{margin-left:auto;min-height:44px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.profile-button img{display:block;width:16px;height:16px;transition:transform 280ms cubic-bezier(.4,0,.2,1)}.profile-button:hover img{transform:scale(1.625)}
 
