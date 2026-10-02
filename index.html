@@ -20,7 +20,9 @@ button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-vi
 html.lenis,html.lenis body{height:auto}.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}.lenis [data-lenis-prevent]{overscroll-behavior:contain}
 
 /* Toolbar — stays on top while the page glides underneath */
-.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:20px;padding:25px 32px;min-height:var(--header-h);background:#fff}
+/* No bar of its own: only the logo and the profile button stay pinned, and the page under the rest of it stays clickable */
+.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:20px;padding:25px 32px;min-height:var(--header-h);background:transparent;pointer-events:none}
+.toolbar>*{pointer-events:auto}
 .brand{display:flex;align-items:center;flex-shrink:0}.brand img{display:block;width:auto;height:27px;object-fit:contain}
 .profile-button{margin-left:auto;min-height:44px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.profile-button img{display:block;width:16px;height:16px;transition:transform 280ms cubic-bezier(.4,0,.2,1)}.profile-button:hover img{transform:scale(1.625)}
 
@@ -29,6 +31,8 @@ main{flex:1;margin:62px 0 160px}
 .page{width:min(1194px,calc(100% - 64px));margin-inline:auto}
 /* With the table of contents showing, the list columns (--page-w) sit centered but never under the TOC; the page runs on to the right edge so images can fill the space there */
 @media(min-width:1001px){.page{width:auto;margin-left:max(240px,(100% - var(--page-w)) / 2);margin-right:32px}}
+/* Once images have their own column, it runs flush to the window edge */
+@media(min-width:1501px){.page{margin-right:0}}
 .identity h1{color:var(--ink);white-space:nowrap}.identity h1 .slash{padding-right:14px}
 .page-shell{position:relative;margin-top:85px}
 
