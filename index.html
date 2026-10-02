@@ -66,8 +66,10 @@ main{flex:1;margin:62px 0 160px}
 .row{display:grid;grid-template-columns:var(--tab-w) minmax(0,1fr);column-gap:var(--col-gap);align-items:start}
 .row-title{position:relative;display:flex;align-items:center;gap:10px;min-height:40px;padding:5px 0;width:fit-content;max-width:calc(var(--tab-w) - 10px);color:var(--muted);transition:transform 340ms var(--ease-move),color 260ms}
 .row-title:hover,.row-title:focus-visible,.row[data-open="true"]>.row-title{color:var(--ink);transform:translateX(10px)}
-.row-label{position:relative;margin-left:2px;word-break:keep-all}
-.row-label::before{content:'';position:absolute;inset:-4px -8px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.03);opacity:0;transition:opacity 200ms;z-index:-1;pointer-events:none}
+/* Hover box keeps --arrow-gap from the arrow in every list: label margin = gap + box side padding − 13px (title gap 10px + arrow overhang past the bullet ≈3px) */
+.row{--arrow-gap:16px;--box-pad-y:4px;--box-pad-x:8px;--label-ml:calc(var(--arrow-gap) + var(--box-pad-x) - 13px)}
+.row-label{position:relative;margin-left:var(--label-ml);word-break:keep-all}
+.row-label::before{content:'';position:absolute;inset:calc(-1 * var(--box-pad-y)) calc(-1 * var(--box-pad-x));border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.03);opacity:0;transition:opacity 200ms;z-index:-1;pointer-events:none}
 .row-title:hover .row-label::before,.row-title:focus-visible .row-label::before,.row[data-open="true"]>.row-title .row-label::before{opacity:1}
 .bullet{width:14px;flex:0 0 14px;position:relative;align-self:center}
 .bullet::before{content:'';position:absolute;left:4px;top:50%;transform:translateY(-50%);display:block;width:5px;height:5px;background:#444;border-radius:50%;transition:opacity 260ms}
@@ -90,8 +92,8 @@ main{flex:1;margin:62px 0 160px}
 
 /* 자문자답 · 단편 소설 */
 .qa-list .row-title{min-height:52px;padding:10px 0}
-.qa-list .row-label::before{inset:-9px -15px;border-radius:12px}
-.self-qa .row-label,.interview .row-label{margin-left:14px}
+.qa-list .row{--box-pad-y:9px;--box-pad-x:15px}
+.qa-list .row-label::before{border-radius:12px}
 .qa-list .copy{padding:18px 0 38px}
 .qa-answer{color:var(--text);line-height:1.7}
 .qa-image{grid-column:2;grid-row:1;position:relative;width:100%;aspect-ratio:var(--qa-ratio);margin:18px 0 38px;overflow:hidden;background:#f2f2f2}
@@ -148,6 +150,15 @@ main{flex:1;margin:62px 0 160px}
  .qa-list .copy:not(:last-child){padding-bottom:20px}
 }
 
+/* 자문자답 · 인터뷰 — each question stays on one line, so the title column widens and the image moves under the answer */
+@media(min-width:701px){
+ .self-qa .qa-list,.interview .qa-list{--tab-w:350px}
+ :is(.self-qa,.interview) .row-title{max-width:none;white-space:nowrap}
+ :is(.self-qa,.interview) .row-clip{grid-template-columns:minmax(0,var(--body-w))}
+ :is(.self-qa,.interview) .qa-image{grid-column:1;grid-row:2;width:min(100%,320px);margin:0 0 32px}
+ :is(.self-qa,.interview) .copy:not(:last-child){padding-bottom:20px}
+}
+
 @media(max-width:700px){
  .row{display:block}
  .row-title{max-width:calc(100% - 10px)}
@@ -155,11 +166,11 @@ main{flex:1;margin:62px 0 160px}
  .scene-list .row-panel{grid-template-rows:0fr}
  .scene-list .row[data-open="true"]>.row-panel{grid-template-rows:1fr}
  .scene-list .row-panel{transition:grid-template-rows 480ms var(--ease-reveal)}
- .scene-list .copy{padding:6px 0 20px 24px}
- .qa-list .copy{padding:14px 0 30px 24px}
+ .scene-list .copy{padding:6px 0 20px calc(24px + var(--label-ml))}
+ .qa-list .copy{padding:14px 0 30px calc(24px + var(--label-ml))}
  .interview-meta{padding-left:24px}
- .qa-image{order:2;width:min(calc(100% - 24px),320px);margin:0 0 28px 24px}
- .version-list .copy{padding:8px 0 24px 24px}
+ .qa-image{order:2;width:min(calc(100% - 24px - var(--label-ml)),320px);margin:0 0 28px calc(24px + var(--label-ml))}
+ .version-list .copy{padding:8px 0 24px calc(24px + var(--label-ml))}
  .log-section.versions{margin-top:56px}
  .archive-footer{padding:40px 24px}
  .back-to-top{right:20px;bottom:20px}
