@@ -118,6 +118,9 @@ main{flex:1;margin:62px 0 160px}
 .copy .qa-follow{margin-top:24px;color:var(--ink);line-height:1.7}.qa-follow span{margin-right:8px;color:var(--faint)}
 .qa-note{color:var(--faint);line-height:1.7}
 
+/* 영상 */
+.video-frame{width:var(--body-w);max-width:100%;aspect-ratio:16/9;margin:0 0 14px;background:#f2f2f2;overflow:hidden}
+.video-frame video{display:block;width:100%;height:100%;object-fit:cover}
 /* 버전 로그 */
 .version-list .copy{padding:8px 0 30px}
 
@@ -180,6 +183,7 @@ main{flex:1;margin:62px 0 160px}
  .interview-meta{padding-left:24px}
  :is(.qa-image,.qa-gallery){order:2;width:min(calc(100% - 24px - var(--label-ml)),320px);margin:0 0 28px calc(24px + var(--label-ml))}
  .version-list .copy{padding:8px 0 24px calc(24px + var(--label-ml))}
+ .video-frame{width:auto}
  .log-section.versions{margin-top:56px}
  .archive-footer{padding:40px 24px}
  .back-to-top{right:20px;bottom:20px}
@@ -207,7 +211,7 @@ main{flex:1;margin:62px 0 160px}
 <main id="top">
 <header class="identity page"><h1><span class="slash">/</span>용주 조</h1></header>
 <div class="page-shell">
-<div class="toc-rail"><nav class="toc" aria-label="페이지 목차"><span class="toc-bar" aria-hidden="true"></span><ol><li><a href="#life-log">log</a></li><li><a href="#life-graph">graph</a></li><li><a href="#self-qa">자문자답</a></li><li><a href="#short-story">단편 소설</a></li><li><a href="#interview">인터뷰</a></li><li><a href="#versions">버전 로그</a></li></ol></nav></div>
+<div class="toc-rail"><nav class="toc" aria-label="페이지 목차"><span class="toc-bar" aria-hidden="true"></span><ol><li><a href="#life-log">log</a></li><li><a href="#life-graph">graph</a></li><li><a href="#self-qa">자문자답</a></li><li><a href="#short-story">단편 소설</a></li><li><a href="#interview">인터뷰</a></li><li><a href="#video">영상</a></li><li><a href="#versions">버전 로그</a></li></ol></nav></div>
 <div class="page page-grid">
 <div class="sections">
 <section class="log-section" id="life-log" aria-labelledby="life-log-title" data-open="false">
@@ -378,6 +382,19 @@ main{flex:1;margin:62px 0 160px}
 </div></div>
 </section>
 
+<section class="log-section video" id="video" aria-labelledby="video-title" data-open="false">
+<h2 class="log-title" id="video-title"><button type="button" class="section-toggle" aria-expanded="false" aria-controls="video-body"><span class="log-sign" aria-hidden="true"><img class="log-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAelJREFUeAHt3MGN1EAURdEHmj1kQBEBZIAzAUIgAzIghJ4QyGAcAhnQkwEZgEvMEhZ+LVnXo3ukv2x1y1eqxe+Sk/MY2/wu501O4mWEYhAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGATGIDB32zyk82WbH9G/vN/mWwozyJLOq+h/Xqd8rh5ZMAaBMQiMQWAMAmMQGIPAGATGIDAGgTEIjEFg5nLxPp1lm7fZ77rNmnNY8vdOceM+B5tr++bi8yWdkeMvW1/K73tIySMLxiAwBoExCIxBYAwCYxAYg8AYBMYgMAaBMQjMXXrXp2mM7DfSm1vpF+lcs9+vnMin9Fvbo+djDuaRBWMQGIPAGATGIDAGgTEIjEFgDAJjEBiDwBgExiAwt6zfv2/zLvut6dfvazpLujX616fZa93mcwq3BJmv1hjpPGa/9v+M6Vp+5zSy30jJIwvGIDAGgTEIjEFgDAJjEBiDwBgExiAwBoExCMxc2F3SWdN5LD87tvmZzki3XFzSvQVi5IYFY3sR+UOONXL8qzVaS8rf6pEFYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGARmXiVd0znV6yMONp/Nmmdu5Dzb3ppHFoxBYAwCYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPA/AHpU7oMpiv2OQAAAABJRU5ErkJggg==" alt="" width="18" height="18"></span><span>영상</span></button></h2>
+<div class="section-body" id="video-body" role="region" aria-labelledby="video-title"><div class="section-clip"><div class="content">
+<ul class="qa-list" aria-label="조용주의 자기소개 영상">
+<li class="row" id="video-1" data-hover="off"><button type="button" class="row-title" aria-expanded="false" aria-controls="video-1-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">이상한 사람 아닙니다.</span></button><div class="row-panel" id="video-1-panel" role="region" aria-label="이상한 사람 아닙니다."><div class="row-clip"><div class="copy">
+<figure class="video-frame"><video src="assets/video-1.mp4" poster="assets/video-1.jpg" width="1920" height="1080" controls playsinline preload="metadata" aria-label="노래 부르는 애니메이션과 아이 티셔츠를 입은 실사 영상, 하단에 최애의 아이 OP"></video></figure>
+<p class="qa-note">♪ YOASOBI — アイドル (최애의 아이 OP)</p>
+</div></div></div></li>
+</ul>
+</div>
+</div></div>
+</section>
+
 <section class="log-section versions" id="versions" aria-labelledby="versions-title" data-open="false">
 <h2 class="log-title" id="versions-title"><button type="button" class="section-toggle" aria-expanded="false" aria-controls="versions-body"><span class="log-sign" aria-hidden="true"><img class="log-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAelJREFUeAHt3MGN1EAURdEHmj1kQBEBZIAzAUIgAzIghJ4QyGAcAhnQkwEZgEvMEhZ+LVnXo3ukv2x1y1eqxe+Sk/MY2/wu501O4mWEYhAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGATGIDB32zyk82WbH9G/vN/mWwozyJLOq+h/Xqd8rh5ZMAaBMQiMQWAMAmMQGIPAGATGIDAGgTEIjEFg5nLxPp1lm7fZ77rNmnNY8vdOceM+B5tr++bi8yWdkeMvW1/K73tIySMLxiAwBoExCIxBYAwCYxAYg8AYBMYgMAaBMQjMXXrXp2mM7DfSm1vpF+lcs9+vnMin9Fvbo+djDuaRBWMQGIPAGATGIDAGgTEIjEFgDAJjEBiDwBgExiAwt6zfv2/zLvut6dfvazpLujX616fZa93mcwq3BJmv1hjpPGa/9v+M6Vp+5zSy30jJIwvGIDAGgTEIjEFgDAJjEBiDwBgExiAwBoExCMxc2F3SWdN5LD87tvmZzki3XFzSvQVi5IYFY3sR+UOONXL8qzVaS8rf6pEFYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPAGARmXiVd0znV6yMONp/Nmmdu5Dzb3ppHFoxBYAwCYxAYg8AYBMYgMAaBMQiMQWAMAmMQGIPA/AHpU7oMpiv2OQAAAABJRU5ErkJggg==" alt="" width="18" height="18"></span><span>버전 로그</span></button></h2>
 <div class="section-body" id="versions-body" role="region" aria-labelledby="versions-title"><div class="section-clip"><div class="content">
@@ -393,6 +410,9 @@ main{flex:1;margin:62px 0 160px}
 </div></div></div></li>
 <li class="row" id="v4"><button type="button" class="row-title" aria-expanded="false" aria-controls="v4-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">v4</span></button><div class="row-panel" id="v4-panel" role="region" aria-label="v4"><div class="row-clip"><div class="copy">
 <p>단편 소설 아래에 인터뷰 추가 — 한희안이 답한 질문 1–6</p><p>2026.10.01</p>
+</div></div></div></li>
+<li class="row" id="v5"><button type="button" class="row-title" aria-expanded="false" aria-controls="v5-panel"><span class="bullet" aria-hidden="true"></span><span class="row-label">v5</span></button><div class="row-panel" id="v5-panel" role="region" aria-label="v5"><div class="row-clip"><div class="copy">
+<p>버전 로그 위에 영상 탭 추가 — 자기소개 영상 「이상한 사람 아닙니다.」</p><p>노래 부르는 애니메이션과 실사 영상을 나란히, 가운데 아래에 최애의 아이 OP</p><p>항목을 닫으면 영상도 멈춤</p><p>2026.10.11</p>
 </div></div></div></li>
 </ul>
 </div>
@@ -538,7 +558,7 @@ document.querySelector('.brand').addEventListener('click',e=>{e.preventDefault()
 // Sections: closed at first, the title opens and closes them
 const sections=[...document.querySelectorAll('.log-section')].map(sec=>{
  const btn=sec.querySelector('.section-toggle'),body=sec.querySelector('.section-body');
- const set=open=>{sec.dataset.open=open;btn.setAttribute('aria-expanded',String(open));body.inert=!open};
+ const set=open=>{sec.dataset.open=open;btn.setAttribute('aria-expanded',String(open));body.inert=!open;if(!open)sec.querySelectorAll('video').forEach(v=>v.pause())};
  btn.addEventListener('click',()=>set(sec.dataset.open!=='true'));
  set(false);
  return {sec,set};
@@ -549,7 +569,7 @@ const rows=[...document.querySelectorAll('.row')];
 const rowStates=rows.map(row=>{
  const title=row.querySelector('.row-title');
  const s={pinned:false,hover:false,focus:false,timer:0};
- s.sync=()=>{const open=s.pinned||s.hover||s.focus;row.dataset.open=open;row.dataset.pinned=s.pinned;title.setAttribute('aria-expanded',String(open))};
+ s.sync=()=>{const open=s.pinned||s.hover||s.focus;row.dataset.open=open;row.dataset.pinned=s.pinned;title.setAttribute('aria-expanded',String(open));if(!open)row.querySelectorAll('video').forEach(v=>v.pause())};
  title.addEventListener('click',()=>{s.pinned=!s.pinned;if(!s.pinned)s.hover=false;clearTimeout(s.timer);s.timer=0;s.sync()});
  if(row.dataset.hover!=='off'){
   const arm=()=>{clearTimeout(s.timer);s.timer=setTimeout(()=>{s.timer=0;if(lenis&&lenis.isScrolling)return;s.hover=true;s.sync()},180)};
