@@ -58,10 +58,10 @@ main{flex:1;margin:62px 0 160px}
 .rows{list-style:none;margin:0;padding:20px 0 0 28px}
 .row{display:grid;grid-template-columns:var(--tab-w) minmax(0,var(--body-w));column-gap:var(--col-gap);align-items:start;padding:18px 0;border-top:1px solid var(--rule)}
 .row:first-child{border-top:0}
-.row-title{display:flex;align-items:baseline;gap:10px;color:var(--ink);word-break:keep-all}
+.row-title{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:10px;color:var(--ink);word-break:keep-all}
 .bullet{flex:0 0 14px;position:relative;align-self:center;height:14px}
 .bullet::before{content:'';position:absolute;left:4px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:#444;border-radius:50%}
-.row-sub{display:block;margin:4px 0 0 24px;color:var(--faint);font-size:10.5pt}
+.row-sub{display:block;flex-basis:100%;margin:4px 0 0 24px;color:var(--faint);font-size:10.5pt;overflow-wrap:anywhere}.row-sub a{text-decoration:underline;text-decoration-color:#d6d6d6;text-underline-offset:3px}.row-sub a:hover{color:var(--ink)}
 .copy{color:var(--text);line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
 .copy p+p,.copy p+ul,.copy ul+p,.copy table+p,.copy p+table{margin-top:12px}
 .copy ul{margin:0;padding-left:1.1em}.copy li+li{margin-top:4px}
@@ -74,7 +74,7 @@ main{flex:1;margin:62px 0 160px}
 .copy table{width:100%;border-collapse:collapse;font-size:11pt;line-height:1.6}
 .copy th{color:var(--faint);text-align:left;font-weight:400;padding:6px 12px 6px 0;border-bottom:1px solid var(--rule)}
 .copy td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top}
-.copy td:first-child{color:var(--ink);white-space:nowrap}
+.copy td:first-child{color:var(--ink);min-width:6.5em;word-break:keep-all}
 .num{font-variant-numeric:tabular-nums}
 .copy th,.copy td.num:not(:last-child){white-space:nowrap}
 .copy td:last-child.num{white-space:normal}
@@ -142,8 +142,8 @@ main{flex:1;margin:62px 0 160px}
 <thead><tr><th>단계</th><th>할 일</th><th>시간</th><th>상태</th></tr></thead>
 <tbody>
 <tr><td>M1</td><td>인터랙션의 종류와 속성값 정리</td><td class="num">1h</td><td><span class="status">완료</span></td></tr>
-<tr><td>M2</td><td>섹션별 정보의 성격 · 현재 상태 · 표현 후보 정리</td><td class="num">2h</td><td><span class="status now">진행</span></td></tr>
-<tr><td>M3</td><td>토스 페이지 레퍼런스를 성격별로 정리</td><td class="num">2h</td><td><span class="status">대기</span></td></tr>
+<tr><td>M2</td><td>섹션별 정보의 성격 · 현재 상태 · 한계 · 개선 방향 정리</td><td class="num">2h</td><td><span class="status now">진행</span></td></tr>
+<tr><td>M3</td><td>토스 페이지 5곳의 정보구조 · 인터랙션 정리</td><td class="num">2h</td><td><span class="status now">진행</span></td></tr>
 <tr><td>M4</td><td>진우 Phi-OS · 수진 연간 구조 · 현재 형태 점검, 히어로 수정 여부</td><td class="num">4h+</td><td><span class="status">대기</span></td></tr>
 <tr><td>M5</td><td>레퍼런스 탐색 후 페이지에 적용 (적용 전 버전 태그)</td><td class="num">6h+</td><td><span class="status">대기</span></td></tr>
 <tr><td>M6</td><td>섹션마다 근거 한 줄, 피어크리틱 · 전문가 피드백</td><td class="num">—</td><td><span class="status">대기</span></td></tr>
@@ -432,6 +432,166 @@ main{flex:1;margin:62px 0 160px}
 </ul>
 </article>
 
+<article class="topic" id="d1015-limits">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">섹션별 한계</h2>
+<p class="topic-lead reveal">배포된 v5를 기준으로, 취향이 아니라 위의 속성값과 근거에 비춰 어긋나는 점만 적었다. 오른쪽 칸이 근거다.</p>
+<ul class="rows">
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>역량과 태도</h3>
+<div class="copy"><table>
+<thead><tr><th>한계</th><th>근거</th></tr></thead>
+<tbody>
+<tr><td>기본 상태에 내용이 없다</td><td>10줄 모두 이름만 보인다. "무엇을 기르나"라는 섹션의 핵심은 펼쳐야 읽힌다. 짧고 대부분 읽어야 하는 설명을 숨겼다. (아코디언을 피할 때)</td></tr>
+<tr><td>지연 없는 호버 펼침</td><td>마우스가 스치기만 해도 열리고, 열린 줄이 아래 줄을 밀어 커서 아래 항목이 바뀐다. 목록을 훑으며 내려가면 연달아 열리고 닫힌다. (호버는 0.3–0.5초 기다린 뒤)</td></tr>
+<tr><td>누른 결과가 안 보인다</td><td>누르는 순간 이미 호버로 열려 있어 바뀌는 건 회색 면뿐이다. 다시 눌러 풀어도 커서가 위에 있어 열린 채다. (0.1초 안의 피드백)</td></tr>
+<tr><td>펼칠 수 있다는 표시가 없다</td><td>꺾쇠 · +가 없다. 터치에서는 호버 신호마저 없어 누를 수 있는 줄인지 모른다. (발견 가능성)</td></tr>
+<tr><td>두 묶음과 관계가 설명되지 않는다</td><td>역량과 태도가 어떻게 다른지(무엇을 기르나 / 어떤 자세로 배우나)는 라벨뿐이다. 역량 5개가 수업 태그로 다시 쓰이는 관계도 화면에서 끊겨 있다.</td></tr>
+</tbody></table></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>연간 구조</h3>
+<div class="copy"><table>
+<thead><tr><th>한계</th><th>근거</th></tr></thead>
+<tbody>
+<tr><td>처음엔 상세가 없다</td><td>"전체" 상태는 막대 4개뿐이다. 주간 리듬 · 캠프 · 졸업 조건은 눌러야 보이고, 누르기 전엔 그런 게 있다는 것도 모른다. (발견 가능성)</td></tr>
+<tr><td>길이 = 기간이 깨진다</td><td>열린 카드가 읽을 폭(320 · 600px)까지 넓어져 옆 막대를 덮는다. 2개월짜리 단계가 4개월짜리보다 넓게 그려져, 시간축이라는 형식의 약속을 스스로 어긴다.</td></tr>
+<tr><td>효과에 비해 큰 움직임</td><td>축 확대는 최대 1.2배라 "어디쯤인가"는 거의 달라지지 않는데, 축 · 눈금 · 막대가 함께 움직인다. (지속 시간 · 공간)</td></tr>
+<tr><td>바깥을 누르면 닫힌다</td><td>팝오버의 규칙인데 이 카드는 본문이다. 글을 선택하려고 옆을 눌러도 사라진다. (패턴의 기대 불일치)</td></tr>
+<tr><td>열면 아래가 밀린다</td><td>1학기 카드는 주간 리듬 표가 있어 길다. 열 때마다 아래 섹션 전체가 내려간다.</td></tr>
+<tr><td>가장 무거운 정보가 가장 깊다</td><td>지원자에게 "월–금 전일제"는 결정적인데, 1학기 카드 안쪽 두 단계 아래에 있다. (자주 필요한 것은 앞에)</td></tr>
+</tbody></table></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>주요 수업들</h3>
+<div class="copy"><table>
+<thead><tr><th>한계</th><th>근거</th></tr></thead>
+<tbody>
+<tr><td>상세가 목록을 밀어낸다</td><td>상세 하나가 약 1,300px이라 열면 다른 수업들이 화면 밖으로 나간다. 여러 개를 열면 섹션이 수천 px로 늘어난다. (밀어내기의 비용)</td></tr>
+<tr><td>비교할 수 없다</td><td>두 수업의 상세가 세로로 멀리 떨어져 나란히 볼 수 없다. 12개 중 고르는 것이 이 섹션의 일인데 비교 수단이 없다.</td></tr>
+<tr><td>저절로 펼쳐진다</td><td>섹션이 보이면 첫 수업이 스스로 열린다(코드 기준). 요청하지 않은 높이 변화로 읽던 자리가 밀린다. (사용자가 요청할 때만 바뀐다)</td></tr>
+<tr><td>탐색 축이 하나뿐</td><td>필터는 진행 방식(타입)뿐이다. 지원자가 출발점으로 삼기 쉬운 역량 태그는 보이기만 하고 쓸 수 없다.</td></tr>
+<tr><td>머리글이 목록을 끊는다</td><td>타입 머리글 설명이 2–3문장이라 "전체" 보기에서 수업 줄 사이를 길게 끊는다.</td></tr>
+</tbody></table></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>수업을 관통하는 접근</h3>
+<div class="copy"><table>
+<thead><tr><th>한계</th><th>근거</th></tr></thead>
+<tbody>
+<tr><td>하나 누르면 여섯이 열린다</td><td>누른 것과 바뀌는 것이 다르다. 원인과 결과가 이어지지 않는다. (범위)</td></tr>
+<tr><td>짧은 설명에도 큰 빈칸</td><td>열린 높이를 가장 긴 설명에 맞춰, 짧은 박스는 아래가 비어 보인다.</td></tr>
+<tr><td>누를 수 있다는 표시가 없다</td><td>꺾쇠가 없고 호버 면만 신호다. 터치에서는 단서가 없다.</td></tr>
+<tr><td>방법론이 보이지 않는다</td><td>묶음 기준(배우는 자리)과 리드의 근거(인지적 도제)가 서로 이어지지 않는다. 6개가 대등한 그리드라 "어떻게 이어지는가"가 드러나지 않는다.</td></tr>
+<tr><td>다른 섹션과 끊겨 있다</td><td>주간 리듬(연간 구조), 태도(역량과 태도)와 같은 내용을 말하는데 연결이 없다. 예: 공유회 ↔ 공유하며 배우기.</td></tr>
+</tbody></table></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>페이지 전체</h3>
+<div class="copy"><ul>
+<li>펼치는 규칙이 네 가지다 — 호버로 열고 클릭으로 고정 / 줄마다 클릭 / 하나 누르면 전체 / 하나 선택 + 축 확대. 같은 생김새의 다른 동작. (일관성)</li>
+<li>펼침 표시(꺾쇠)는 커리큘럼에만 있다.</li>
+<li>섹션 사이의 관계(역량 ↔ 수업, 장치 ↔ 태도, 주간 리듬 ↔ 장치)를 보여 주는 인터랙션이 없다. 인터랙션이 정보의 관계가 아니라 "여닫기"에만 쓰였다.</li>
+</ul></div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-improve">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">섹션별 개선 방향</h2>
+<p class="topic-lead reveal">정보구조(무엇을 어떤 순서 · 묶음으로)와 인터랙션(어떻게 드러내나)을 나눠 적었다. 참고는 아래 "토스 레퍼런스 5곳"에서 관찰한 것이다. 아직 설계안이며 페이지에는 반영하지 않았다.</p>
+<ul class="rows">
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>역량과 태도</h3>
+<div class="copy">
+<p><span class="tag">정보구조</span>두 묶음은 유지하되, 묶음마다 한 줄 정의를 단다 — 역량: 수업에서 기르는 능력 / 태도: 배우는 방식(Phi OS). 항목은 번호 · 한글 · 영문 이름 · 요약 한 줄(늘 보임) · 전문(펼침).</p>
+<p><span class="tag">인터랙션</span>호버 펼침을 없애고 줄 전체를 누르면 열린다. 꺾쇠를 달고, 여러 줄을 독립적으로 연다. 역량 줄을 펼치면 "이 역량을 기르는 수업" 칩이 나오고, 누르면 커리큘럼으로 이동하며 그 역량이 필터로 걸린다.</p>
+<p><span class="tag">참고</span>toss.im/company의 Culture — 가치 8개를 번호 · 영문/국문 제목 · 설명으로 모두 펼친 목록, 왼쪽 라벨은 sticky. 같은 성격(가치 목록)의 정보를 숨기지 않는다.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>연간 구조</h3>
+<div class="copy">
+<p><span class="tag">정보구조</span>맨 위에 요약 표(기간 · 수업 요일과 시간 · 방학 · 졸업 조건)를 늘 보이게 둔다. 주간 리듬을 1학기 안쪽에서 꺼내 이 요약으로 올린다. 그 아래 시간축, 그 아래 단계 상세.</p>
+<p><span class="tag">인터랙션</span>축은 확대하지 않고 막대 길이 = 기간을 지킨다. 세그먼트와 막대는 같은 하나의 선택이고, 상세는 축 아래 고정 영역(탭 패널)에 바뀌어 나온다. 처음엔 1학기가 선택된 상태. 바깥 클릭으로 닫히지 않는다. 상세 영역 높이는 가장 긴 상세에 맞춰 아래 섹션이 흔들리지 않게.</p>
+<p><span class="tag">참고</span>토스 이벤트 페이지들의 "지원 안내 · 채용 일정" key-value 표. toss.im/company History — 기간 탭을 고르면 왼쪽엔 그 시기의 질문, 오른쪽엔 연도별 목록.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>주요 수업들</h3>
+<div class="copy">
+<p><span class="tag">정보구조</span>왼쪽에 타입 세로 탭(이름 + 수업 수), 오른쪽에 수업 카드(영문 · 한글 이름, 전문가, 역량 태그, 리드 한 줄). 타입 설명은 패널 위 한 줄 + 진행 방식 메타로 줄인다. Course Profile은 목록과 다른 층으로 분리.</p>
+<p><span class="tag">인터랙션</span>카드를 누르면 오른쪽 사이드 패널(논모달)에 Course Profile이 열리고, 패널 안 ←/→로 이웃 수업, Esc로 닫는다. 좁은 화면은 전체 화면 시트. 역량 칩을 필터로 — 고르면 해당 카드만 남는다. 저절로 펼침은 없앤다.</p>
+<p><span class="tag">참고</span>AI · ML · Data와 토스플레이스의 채용 공고 — 왼쪽 직군 + 개수, 활성은 진한 글씨 + 세로 막대, 오른쪽 카드 2열. 개수를 탭에 적어 고르기 전에 규모를 알 수 있다.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>수업을 관통하는 접근</h3>
+<div class="copy">
+<p><span class="tag">정보구조</span>세 자리 묶음을 흐름 순서(세션 안에서 → 스스로 돌아보기 → 세션 밖에서)로 놓고 묶음 사이에 이어짐을 표시한다. 장치마다 이름 + 결과 한 줄은 늘 보이고, 설명은 펼친다. 인지적 도제 대응은 확인된 뒤에만.</p>
+<p><span class="tag">인터랙션</span>누른 박스만 열리고 높이는 각자. 장치를 고르면 이어지는 태도가 표시된다(예: 공유회 → 공유하며 배우기, 대응은 확인 필요). 한 주 시나리오(요일별로 어떤 장치가 일어나는지)를 연간 구조의 주간 리듬과 같은 표로 보여 주는 안도 있다.</p>
+<p><span class="tag">참고</span>AI · ML · Data의 혜택 3행 — 왼쪽 제목, 오른쪽 설명을 모두 펼친 채 순서대로 머문다. toss.im의 기능 데모 — "보여 주기"가 설명보다 강하다.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>페이지 전체</h3>
+<div class="copy"><table>
+<thead><tr><th>규칙</th><th>내용</th></tr></thead>
+<tbody>
+<tr><td>펼침은 한 가지</td><td>클릭 + 꺾쇠, 누른 것만, 여러 개 가능. 호버는 "누를 수 있음" 신호까지.</td></tr>
+<tr><td>요청한 변화만</td><td>저절로 펼침 · 바깥 클릭 닫힘 없음. 움직임 줄이기 설정 존중.</td></tr>
+<tr><td>인터랙션은 관계에</td><td>역량 → 수업, 장치 → 태도, 주간 리듬 → 장치. 여닫기보다 "잇기"에 인터랙션을 쓴다.</td></tr>
+<tr><td>연출의 자리</td><td>감성 연출은 히어로 · 섹션 전환에만, 정보 블록은 정적으로 (토스 5곳의 공통점).</td></tr>
+</tbody></table></div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-toss">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">토스 레퍼런스 5곳</h2>
+<p class="topic-lead reveal">2026-10-15 데스크톱 폭에서 직접 스크롤하고 눌러 보며 정리했다. 채용 이벤트 세 곳은 본문이 Framer 페이지(iframe)라 일부 호버 동작은 자동 조작으로 재현되지 않았고, toss.im은 약 4만 9천 px 중 절반(광고 섹션)까지 확인했다.</p>
+<ul class="rows">
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>AI · ML · Data 대규모 채용<span class="row-sub"><a href="https://toss.im/career/event/ai-ml-data-2026" target="_blank" rel="noopener">toss.im/career/event/ai-ml-data-2026</a></span></h3>
+<div class="copy">
+<p><span class="tag">구성</span>토스 채용 GNB(고정) + 본문 iframe + 하단 고정 CTA 바. 히어로(혜택 한 줄 → 큰 제목 → 기간 + 남은 시간 카운트다운 → 지원하기) → 조직 소개 문장 → 혜택 3가지 → 지원 분야(직군 7개 · 포지션 카드) → 일하는 방식 3가지 → 조직 아티클 카드 + 기술 블로그 목록 → 지원 안내(key-value) → FAQ 6문항 → 마무리 CTA.</p>
+<p><span class="tag">인터랙션</span>카운트다운이 실시간으로 줄어든다. 혜택 3행은 sticky라 한 행씩 잠시 머물며 넘어간다(왼쪽 제목 / 오른쪽 설명). 지원 분야는 세로 탭 — 직군 + 포지션 수, 활성은 진한 글씨 + 왼쪽 세로 막대, 오른쪽 패널이 바뀌고 안에서 다시 하위 팀(Ads, Commerce…)으로 묶인다. 카드를 누르면 공고 상세로 이동. 블록은 스크롤 시 떠오른다. FAQ는 아코디언이 아니라 답까지 모두 펼쳐 둔다.</p>
+<p><span class="tag">가져올 점</span>개수를 단 세로 탭 → 주요 수업들 타입. key-value 안내 → 연간 구조 요약. 답을 다 펼친 FAQ — 대부분 읽어야 하는 정보는 숨기지 않는다.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>토스뱅크 디자인 직군 채용<span class="row-sub"><a href="https://toss.im/career/event/tossbank-design-2026" target="_blank" rel="noopener">toss.im/career/event/tossbank-design-2026</a></span></h3>
+<div class="copy">
+<p><span class="tag">구성</span>같은 iframe 구조. 히어로 "Simplify Banking" + 채용명 · 혜택 · 기간 → 이벤트 종료 안내 → "은행을 만들 동료를 찾아요" → 직군 카드 3개(Product · Visual · UX Researcher, 각 한 줄) → 보상(AirPods 5) → "다양한 관점이 모여" 아티클 목록(직군 · 이름 · 제목) → 채용 일정(key-value, 마감 표시) → FAQ 8문항 2열 → 종료 안내 + 채용 홈 링크.</p>
+<p><span class="tag">인터랙션</span>히어로 글자가 렌즈처럼 일렁이는 왜곡 효과(시간 기반 — 우리 히어로 파동의 출처). 제목은 단어 단위로 등장. 직군 카드는 유리 질감과 바닥 반사, 컴포넌트 이름이 "Hover Reveal Card"(호버 변화는 이번에 재현하지 못함). 보상 이미지 주위로 파동 링. 상단 고정 지원하기.</p>
+<p><span class="tag">가져올 점</span>표현의 강도를 정보 성격으로 나눈다 — 히어로 · 보상 같은 "순간"엔 강한 연출, 일정 · FAQ 같은 "정보"는 정적인 표.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>토스플레이스 전 직군 채용<span class="row-sub"><a href="https://tossplace.com/recruit" target="_blank" rel="noopener">tossplace.com/recruit</a></span></h3>
+<div class="copy">
+<p><span class="tag">구성</span>고정 GNB(소개 · 공고 · 아티클 · 일정 · FAQ 앵커 + 지원하기) → 히어로(채용명 | 기간, 지원하기) → "토스가 멈춰 있던 오프라인에 뛰어든 이유"(통계) → 제품 카드(프론트 · 포스 · 키오스크 · 페이스페이) → 채용 공고(직군 8개 + 개수 / 공고 카드 2열, 기술 태그) → 인용 "서버가 멈춰도 결제는 멈추지 않아요" → 아티클 "우리는 이렇게 일해요" → 채용 일정(카운트다운 + key-value) → FAQ 6문항 2열 → 공유하기(링크 복사).</p>
+<p><span class="tag">인터랙션</span>문장이 글자 단위로 등장. 통계 섹션은 sticky로 머물며 막대그래프가 자란다. 제품 카드는 엇갈려 떠오르고 화살표 버튼이 있다(영상 6개). 공고는 세로 탭 — 활성은 진한 글씨 + 파란 개수 + 세로 막대, 카드에 꺾쇠. GNB 앵커가 페이지 안 목차 역할을 한다.</p>
+<p><span class="tag">가져올 점</span>페이지 안 앵커 GNB는 우리 목차와 같은 역할 — 긴 한 페이지에서 섹션을 바로 고른다. 직군 개수를 탭에 적는 것.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>토스 회사 소개<span class="row-sub"><a href="https://toss.im/company" target="_blank" rel="noopener">toss.im/company</a></span></h3>
+<div class="copy">
+<p><span class="tag">구성</span>고정 GNB → "Daily Greatness" 히어로 → Vision(문장 + 본문) → History(기간 탭 2025 · 2024–2021 · 2020–2017 · 2016–2013) → Group(계열사 카드) → Culture(가치 8개) → Leaders(사진 · 직함 · 인용).</p>
+<p><span class="tag">인터랙션</span>History는 기간 탭 + ←/→. 탭을 고르면 왼쪽엔 그 시기의 질문, 오른쪽엔 연도 · 제목 · 한 줄 목록이 바뀐다(ARIA 탭 역할은 없음). Group은 큰 문장이 sticky 배경으로 머물고 계열사 사진 카드(로고 + 한 줄)가 엇갈려 올라온다. Culture는 왼쪽 "Culture" 라벨이 sticky, 오른쪽에 01–08 번호 · 영문/국문 제목 · 설명을 펼침 없이 모두 보인다.</p>
+<p><span class="tag">가져올 점</span>Culture는 역량과 태도와 같은 성격 — 가치 목록을 숨기지 않는다. History는 시간 정보를 "기간 탭 + 목록"으로 — 연간 구조 상세 영역의 형식.</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>토스 홈<span class="row-sub"><a href="https://toss.im/" target="_blank" rel="noopener">toss.im</a></span></h3>
+<div class="copy">
+<p><span class="tag">구성</span>고정 GNB(서비스 · 비즈니스 · 회사소개 · 뉴스룸 · 채용, 앱 다운로드) → 약 4만 9천 px 한 페이지 이야기. 확인한 범위: 영상 히어로 "금융부터 일상까지 마침내 토스 하나로" → 송금 → 자산 관리(기능 4개) → 누구나 금융 전문가(대출 금리 비교 · 카드 혜택 · 보험 분석) → 증권(AI 실적 분석 · 주식 모으기 · 커뮤니티) → 쇼핑(결제 · 최저가 · 쿠폰) → 판매자(상품 관리 · 정산 · 광고 상품 7종) …</p>
+<p><span class="tag">인터랙션</span>챕터마다 sticky 무대(한 화면이 2,400–7,600px 동안 고정) 위에서 제목이 단어 단위로 등장하고, 실제 UI 목업이 움직인다("금리 분석 중…", "밀어서 결제하기"). 섹션은 스크롤 위치에 닿아야 렌더된다.</p>
+<p><span class="tag">가져올 점</span>기능은 설명보다 "보여 주기"가 강하다 — 관통하는 접근을 한 주 시나리오 데모로. 다만 스크롤 연동은 골라 읽는 정보에는 맞지 않는다(속성값 — 트리거).</p>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>다섯 곳의 공통점</h3>
+<div class="copy"><table>
+<thead><tr><th>정보의 성격</th><th>토스의 표현</th><th>우리 섹션</th></tr></thead>
+<tbody>
+<tr><td>분류된 목록</td><td>왼쪽 세로 탭(이름 + 개수) + 오른쪽 카드, 카드 → 상세로 이동</td><td>주요 수업들</td></tr>
+<tr><td>안내 · 일정</td><td>key-value 표, 정적</td><td>연간 구조 요약</td></tr>
+<tr><td>가치 목록</td><td>번호 · 제목 · 설명을 모두 펼침, 라벨 sticky</td><td>역량과 태도</td></tr>
+<tr><td>시간의 흐름</td><td>기간 탭 + 시기별 목록</td><td>연간 구조 상세</td></tr>
+<tr><td>FAQ</td><td>답까지 모두 펼친 2열 — 아코디언을 쓰지 않음</td><td>—</td></tr>
+<tr><td>기능 · 방법</td><td>sticky 무대 위 UI 데모</td><td>수업을 관통하는 접근</td></tr>
+<tr><td>감성 · 브랜드</td><td>히어로 일렁임, 글자 · 단어 단위 등장, 파동</td><td>히어로 · 섹션 전환에만</td></tr>
+<tr><td>행동 유도</td><td>지원하기를 히어로 · 고정 바 · 마무리에 반복, 카운트다운</td><td>상단바 · 히어로</td></tr>
+</tbody></table></div></li>
+</ul>
+</article>
+
 <article class="topic" id="d1015-questions">
 <h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">설계할 때 묻는 질문</h2>
 <p class="topic-lead reveal">위의 근거를 섹션 설계에 쓰기 위해 질문으로 바꿨다. 이 질문들은 내가 만든 것이고, 괄호 안이 근거다.</p>
@@ -486,6 +646,14 @@ main{flex:1;margin:62px 0 160px}
 <li class="row reveal"><h3 class="row-title"><span class="bullet"></span>책</h3>
 <div class="copy"><ul>
 <li>Dan Saffer, <i>Microinteractions: Designing with Details</i>, O'Reilly, 2013 — 요약 자료로 확인 ※</li>
+</ul></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>레퍼런스 사이트</h3>
+<div class="copy"><ul>
+<li><a href="https://toss.im/career/event/ai-ml-data-2026" target="_blank" rel="noopener">2026 토스 AI · ML · Data 전직군 대규모 채용</a></li>
+<li><a href="https://toss.im/career/event/tossbank-design-2026" target="_blank" rel="noopener">2026 토스뱅크 디자인 직군 대규모 채용</a> (이벤트 종료 상태)</li>
+<li><a href="https://tossplace.com/recruit" target="_blank" rel="noopener">토스플레이스 전 직군 대규모 채용</a></li>
+<li><a href="https://toss.im/company" target="_blank" rel="noopener">토스 회사 소개</a></li>
+<li><a href="https://toss.im/" target="_blank" rel="noopener">토스 홈</a> (절반까지 확인)</li>
 </ul></div></li>
 </ul>
 </article>
