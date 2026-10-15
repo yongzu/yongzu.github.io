@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Interaction Notes</title>
+<link rel="icon" type="image/png" href="assets/asterisk.png">
+<style>
+/* yongzu.github.io와 같은 토큰 · 글꼴 · 줄 문법. 스무스 스크롤(Lenis)은 쓰지 않는다 — 읽고 찾는 페이지라 브라우저 기본 스크롤을 지킨다 */
+@font-face{font-family:Pretendard;src:url(assets/font.woff2) format('woff2');font-weight:400;font-display:swap}
+:root{color-scheme:light;--ink:#333;--text:#555;--muted:#777;--faint:#999;--rule:#ededed;--ease:cubic-bezier(.25,.1,.25,1);--ease-move:cubic-bezier(.22,1,.36,1);--ease-reveal:cubic-bezier(.16,1,.3,1);--header-h:82px;--tab-w:200px;--body-w:640px;--col-gap:28px;--page-w:calc(var(--tab-w) + var(--col-gap) + var(--body-w))}
+*{box-sizing:border-box}
+html{font-size:12pt;-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-gutter:stable;scroll-padding-top:calc(var(--header-h) + 24px)}
+body{margin:0;display:flex;flex-direction:column;min-height:100vh;background:#fff;color:var(--muted);font-family:Pretendard,sans-serif;font-size:12pt;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,figure{margin:0;font:inherit}
+button{font:inherit;color:inherit;letter-spacing:inherit;cursor:pointer;background:none;border:0;padding:0;text-align:left}a{color:inherit;text-decoration:none}
+button:focus-visible,a:focus-visible{outline:1px solid #777;outline-offset:5px}
+::selection{background:#e8e8e8;color:#222}[hidden]{display:none!important}
+
+/* Toolbar — 로고만 붙어 있고, 차이 혼합으로 어떤 배경에서도 읽힌다 */
+.toolbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;padding:25px 32px;min-height:var(--header-h);pointer-events:none;mix-blend-mode:difference}
+.toolbar>*{pointer-events:auto}.toolbar img{filter:invert(1)}
+.brand img{display:block;height:27px;width:auto}
+
+main{flex:1;margin:62px 0 160px}
+.page{width:min(1194px,calc(100% - 64px));margin-inline:auto}
+@media(min-width:1001px){.page{width:auto;margin-left:max(240px,(100% - var(--page-w)) / 2);margin-right:32px}}
+.identity h1{color:var(--ink)}.identity h1 .slash{padding-right:14px}
+.identity p{margin-top:10px;max-width:var(--body-w);color:var(--faint);word-break:keep-all}
+
+/* 날짜 탭 — 한 줄, 내용 바로 위. 고른 탭은 진한 글씨 + 아래 선 두 가지로 표시(NN/g, Tabs Used Right) */
+.date-tabs{display:flex;flex-wrap:wrap;gap:4px 24px;margin-top:56px;border-bottom:1px solid var(--rule)}
+.date-tab{position:relative;min-height:44px;padding:10px 0;color:var(--faint);transition:color 200ms}
+.date-tab:hover{color:var(--ink)}
+.date-tab[aria-selected="true"]{color:var(--ink)}
+.date-tab::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px;background:var(--ink);transform:scaleX(0);transition:transform 340ms var(--ease-move)}
+.date-tab[aria-selected="true"]::after{transform:none}
+
+.page-shell{position:relative;margin-top:56px}
+
+/* 목차 — 고른 날짜의 섹션만. 왼쪽 끝은 로고와 같은 선, 잉크 막대가 보이는 섹션으로 미끄러진다 */
+.toc-rail{position:absolute;top:0;bottom:0;left:32px;width:170px;pointer-events:none}
+.toc{position:sticky;top:calc(var(--header-h) + 40px);pointer-events:auto}
+.toc ol{list-style:none;margin:0;padding:0 0 0 14px;border-left:1px solid var(--rule);display:flex;flex-direction:column;gap:2px}
+.toc a{display:block;width:fit-content;padding:5px 0;color:var(--faint);transition:color 200ms,transform 340ms var(--ease-move)}
+.toc a:hover{color:var(--ink);transform:translateX(4px)}
+.toc a.is-active{color:var(--ink)}
+.toc-bar{position:absolute;left:0;top:0;width:2px;height:0;border-radius:2px;background:var(--ink);opacity:0;transition:transform 520ms var(--ease-move),height 520ms var(--ease-move),opacity 240ms}
+
+/* 섹션 — 늘 펼쳐 둔다. 이 페이지는 대부분을 읽어야 하는 참고 자료라 접지 않는다(NN/g, Accordions on Desktop) */
+.topic{scroll-margin-top:calc(var(--header-h) + 24px)}
+.topic+.topic{margin-top:88px}
+.topic-title{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--ink)}
+.topic-title img{width:1em;height:1em}
+.topic-lead{max-width:calc(var(--page-w) - 28px);margin:6px 0 0 28px;color:var(--faint);word-break:keep-all;line-height:1.6}
+
+/* 줄 — 왼쪽 제목, 오른쪽 본문. 누르는 줄이 아니므로 호버 화살표 · 면을 두지 않는다 */
+.rows{list-style:none;margin:0;padding:20px 0 0 28px}
+.row{display:grid;grid-template-columns:var(--tab-w) minmax(0,var(--body-w));column-gap:var(--col-gap);align-items:start;padding:18px 0;border-top:1px solid var(--rule)}
+.row:first-child{border-top:0}
+.row-title{display:flex;align-items:baseline;gap:10px;color:var(--ink);word-break:keep-all}
+.bullet{flex:0 0 14px;position:relative;align-self:center;height:14px}
+.bullet::before{content:'';position:absolute;left:4px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:#444;border-radius:50%}
+.row-sub{display:block;margin:4px 0 0 24px;color:var(--faint);font-size:10.5pt}
+.copy{color:var(--text);line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
+.copy p+p,.copy p+ul,.copy ul+p,.copy table+p,.copy p+table{margin-top:12px}
+.copy ul{margin:0;padding-left:1.1em}.copy li+li{margin-top:4px}
+.copy strong{color:var(--ink);font-weight:400;background:linear-gradient(transparent 62%,#f0f0f0 62%)}
+.src{display:block;margin-top:10px;color:var(--faint);font-size:10.5pt;line-height:1.6}
+.src a{text-decoration:underline;text-decoration-color:#d6d6d6;text-underline-offset:3px}.src a:hover{color:var(--ink)}
+.tag{display:inline-block;margin-right:6px;padding:0 8px;border-radius:999px;background:#f4f4f4;color:var(--muted);font-size:10pt;line-height:1.9}
+
+/* 표 — 수치는 표로. 선은 가로줄만 */
+.copy table{width:100%;border-collapse:collapse;font-size:11pt;line-height:1.6}
+.copy th{color:var(--faint);text-align:left;font-weight:400;padding:6px 12px 6px 0;border-bottom:1px solid var(--rule)}
+.copy td{padding:8px 12px 8px 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.copy td:first-child{color:var(--ink);white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.copy th,.copy td.num:not(:last-child){white-space:nowrap}
+.copy td:last-child.num{white-space:normal}
+
+/* 마일스톤 상태 */
+.status{display:inline-block;min-width:44px;color:var(--faint)}.status.now{color:var(--ink)}
+
+/* 스크롤 등장 — 블록이 40px 아래에서 떠오른다(홈과 같음). 움직임 줄이기면 끔 */
+.has-reveal .reveal{transition:opacity 1s var(--ease-reveal),transform 1s var(--ease-reveal)}
+.has-reveal .reveal:not([data-reveal="in"]){opacity:0;transform:translateY(40px)}
+
+.archive-footer{margin-top:auto;padding:54px max(32px,6vw);background:#f7f7f7;color:#888}
+.archive-footer img{display:block;height:27px;width:auto;margin-bottom:12px}
+.archive-footer a:hover{color:#222;text-decoration:underline;text-underline-offset:4px}
+
+:root{--phi-cursor:url("assets/cursor-arrow.svg") 0 1;--phi-cursor-pointer:url("assets/cursor-pointer.svg") 0 1;--phi-cursor-text:url("assets/cursor-text.svg") 0 7}
+@media(pointer:fine){html,body{cursor:var(--phi-cursor),auto}a,button:not(:disabled){cursor:var(--phi-cursor-pointer),pointer}}
+
+@media(max-width:1000px){.toc-rail{display:none}}
+@media(max-width:800px){main{margin-top:45px}.page{width:calc(100% - 48px)}.toolbar{padding:18px 24px}:root{--header-h:80px}}
+@media(max-width:700px){
+ .rows{padding-left:0}
+ .row{display:block}
+ .copy{margin-top:10px;padding-left:24px}
+ .topic-lead{margin-left:0}
+ .copy table{display:block;overflow-x:auto}
+ .archive-footer{padding:40px 24px}
+}
+@media(max-width:560px){.toolbar{padding:16px 20px}:root{--header-h:72px}.brand img{height:20px}.page{width:calc(100% - 40px)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window)document.documentElement.classList.add('has-reveal')</script>
+</head>
+<body>
+<header class="toolbar">
+<a class="brand" href="https://yongzu.github.io/" aria-label="yongzu 홈"><img src="assets/brand.png" alt="" width="58" height="27"></a>
+</header>
+
+<main id="top">
+<header class="identity page">
+<h1><span class="slash">/</span>인터랙션 노트</h1>
+<p>Beautiful Interface 과제 기록. 날짜 탭마다 그날 정리한 내용을 둔다.</p>
+<nav class="date-tabs" role="tablist" aria-label="날짜"></nav>
+</header>
+
+<div class="page-shell">
+<div class="toc-rail"><nav class="toc" aria-label="이 날짜의 목차"><span class="toc-bar" aria-hidden="true"></span><ol></ol></nav></div>
+
+<div class="page">
+
+<!-- ================= 10.15 ================= -->
+<!-- 새 날짜는 이 section을 복사해 data-date · data-label만 바꾸면 탭과 목차가 저절로 생긴다 -->
+<section class="day" id="d1015" data-date="2026-10-15" data-label="10.15 · 인터랙션의 속성값" role="tabpanel">
+
+<article class="topic" id="d1015-today">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">오늘의 과제</h2>
+<p class="topic-lead reveal">근거 있는 인터랙션으로 프로그램 페이지의 모든 섹션을 설계한다. 예뻐서가 아니라, 사용자 관점에서 통용되는 근거로 설명할 수 있어야 한다.</p>
+<ul class="rows">
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>Outcome</h3>
+<div class="copy"><p>"왜 이렇게 디자인했나요?"라는 질문에 바로 근거를 댈 수 있다. 판단 기준은 정보의 성격과, 사용자가 그 형태에서 기대하는 동작이다.</p></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>결과물의 자리</h3>
+<div class="copy"><p>프로그램 페이지는 따로 만들지 않고 기존 페이지를 고친다. 고치기 전 상태는 버전 로그(지난 버전 페이지)로 남겨 언제든 비교할 수 있게 한다.</p></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>마일스톤</h3>
+<div class="copy"><table>
+<thead><tr><th>단계</th><th>할 일</th><th>시간</th><th>상태</th></tr></thead>
+<tbody>
+<tr><td>M1</td><td>인터랙션의 종류와 속성값 정리 (이 페이지)</td><td class="num">1h</td><td><span class="status now">진행</span></td></tr>
+<tr><td>M3</td><td>섹션별 정보의 성격 · 표현 후보 정리</td><td class="num">2h</td><td><span class="status">초안</span></td></tr>
+<tr><td>M2</td><td>토스 페이지 레퍼런스를 성격별로 정리</td><td class="num">2h</td><td><span class="status">대기</span></td></tr>
+<tr><td>M4</td><td>진우 Phi-OS · 수진 연간 구조 · 현재 형태 점검, 히어로 수정 여부</td><td class="num">4h+</td><td><span class="status">대기</span></td></tr>
+<tr><td>M5</td><td>레퍼런스 탐색 후 페이지에 적용 (적용 전 버전 태그)</td><td class="num">6h+</td><td><span class="status">대기</span></td></tr>
+<tr><td>M6</td><td>섹션마다 근거 한 줄, 피어크리틱 · 전문가 피드백</td><td class="num">—</td><td><span class="status">대기</span></td></tr>
+</tbody></table></div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-frame">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">인터랙션을 쪼개는 틀</h2>
+<p class="topic-lead reveal">"이 인터랙션 어때?"를 감상이 아닌 항목으로 말하기 위한 두 가지 틀. 둘은 겹친다 — 앞의 것은 동작의 구조, 뒤의 것은 움직임의 명세다.</p>
+<ul class="rows">
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>마이크로인터랙션 4요소</h3>
+<div class="copy">
+<table>
+<tbody>
+<tr><td>트리거</td><td>무엇이 시작시키나. 사용자가 직접(클릭, 호버) 또는 시스템이 조건을 만족했을 때(알림 도착).</td></tr>
+<tr><td>규칙</td><td>시작된 뒤 무엇이 어떤 순서로 일어나고, 무엇은 할 수 없나.</td></tr>
+<tr><td>피드백</td><td>규칙은 눈에 보이지 않는다. 사용자는 피드백으로 규칙을 알아챈다 (시각, 소리, 진동).</td></tr>
+<tr><td>루프 · 모드</td><td>시간에 따라 반복되거나 달라지는 것(루프), 설정으로 동작 자체가 바뀌는 것(모드).</td></tr>
+</tbody></table>
+<span class="src">Dan Saffer, <i>Microinteractions: Designing with Details</i>, O'Reilly, 2013. 이 세션에서는 책 원문이 아닌 요약 자료로 확인했다 — <a href="https://cieden.com/book/sub-atomic/microinteractions/structure-of-microinteractions" target="_blank" rel="noopener">Cieden</a>, <a href="https://uxdesign.cc/think-smaller-engaging-users-through-microinteractions-9f10372f2e1b" target="_blank" rel="noopener">UX Collective</a></span>
+</div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>애니메이션 명세 4항목</h3>
+<div class="copy"><p>애니메이션 하나마다 <strong>트리거 · 변형(무엇이 어떻게 바뀌나) · 지속 시간 · 이징</strong>을 정한다. 명세는 프레임이 아니라 밀리초로 적고, 요소마다 이징 곡선을 함께 적는다.</p>
+<span class="src">Page Laubheimer, <a href="https://www.nngroup.com/articles/animation-duration/" target="_blank" rel="noopener">Executing UX Animations: Duration and Motion Characteristics</a>, NN/g, 2020</span></div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-props">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">속성값</h2>
+<p class="topic-lead reveal">인터랙션 하나를 아래 속성으로 나누면, 값마다 근거를 붙일 수 있다. 수치는 원문에서 확인한 것만 적었다.</p>
+<ul class="rows">
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>트리거</h3>
+<div class="copy">
+<table>
+<thead><tr><th>값</th><th>맞는 경우</th><th>지킬 것</th></tr></thead>
+<tbody>
+<tr><td>클릭 · 탭</td><td>상태를 바꾸는 모든 것</td><td>마우스 · 터치 · 키보드에서 같은 결과</td></tr>
+<tr><td>호버</td><td>미리보기, 보조 정보</td><td>0.3–0.5초 기다린 뒤 연다. 키보드 포커스로도 열린다. 터치에는 없다.</td></tr>
+<tr><td>포커스</td><td>호버와 짝</td><td>호버로 여는 것은 포커스로도 열려야 한다</td></tr>
+<tr><td>스크롤 위치</td><td>등장 연출, 이야기의 진행</td><td>스크롤 자체를 바꾸면(스크롤재킹) 전정 장애가 있는 사람에게 어지러움을 줄 수 있다</td></tr>
+<tr><td>시간 (자동)</td><td>분위기, 상태 알림</td><td>5초 넘게 움직이면 멈출 방법을 준다. 내용을 바꾸는 자동 넘김은 쓰지 않는다.</td></tr>
+</tbody></table>
+<p>자동으로 넘어가는 캐러셀에서 사용자는 눈앞의 할인 정보를 찾지 못했다. 5초마다 바뀌어 그 패널이 보이는 시간이 20%뿐이었다. 결론은 <strong>패널은 사용자가 요청할 때만 바뀌어야 한다</strong>는 것.</p>
+<span class="src">Aurora Harley, <a href="https://www.nngroup.com/articles/timing-exposing-content/" target="_blank" rel="noopener">Timing Guidelines for Exposing Hidden Content</a>, NN/g, 2015 · Jakob Nielsen, <a href="https://www.nngroup.com/articles/auto-forwarding/" target="_blank" rel="noopener">Auto-Forwarding Carousels and Accordions Annoy Users</a>, NN/g, 2013 · <a href="https://www.w3.org/WAI/WCAG21/Understanding/pause-stop-hide.html" target="_blank" rel="noopener">WCAG 2.2.2 Pause, Stop, Hide</a> (A) · Laubheimer 2020</span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>피드백 · 응답 시간</h3>
+<div class="copy">
+<table>
+<thead><tr><th>시간</th><th>사용자가 느끼는 것</th></tr></thead>
+<tbody>
+<tr><td class="num">0.1초</td><td>즉시 반응한다고 느낀다. 결과만 보여 주면 된다.</td></tr>
+<tr><td class="num">1초</td><td>지연을 알아채지만 생각의 흐름은 이어진다.</td></tr>
+<tr><td class="num">10초</td><td>주의를 붙잡아 둘 수 있는 한계. 넘으면 진행률을 보여 준다.</td></tr>
+</tbody></table>
+<p>호버의 경우: 커서가 들어오면 <strong>0.1초 안에 시각 피드백</strong>(면, 색, 화살표)을 주고, 0.3–0.5초 머물면 숨긴 내용을 0.1초 안에 연다.</p>
+<span class="src">Jakob Nielsen, <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" target="_blank" rel="noopener">Response Times: The 3 Important Limits</a>, NN/g, 1993 · Harley 2015</span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>지속 시간</h3>
+<div class="copy">
+<table>
+<thead><tr><th>변화</th><th>길이</th></tr></thead>
+<tbody>
+<tr><td>단순한 피드백 (체크박스, 토글)</td><td class="num">약 100ms</td></tr>
+<tr><td>화면이 크게 바뀜 (모달 등장)</td><td class="num">200–300ms</td></tr>
+<tr><td>대부분의 UI 애니메이션</td><td class="num">100–400ms</td></tr>
+<tr><td>큰 화면을 가로지르는 큰 이동</td><td class="num">400ms</td></tr>
+<tr><td>굼뜨다고 느끼기 시작</td><td class="num">500ms 이상</td></tr>
+</tbody></table>
+<p><strong>나가는 것은 들어오는 것보다 짧게</strong> — 예: 팝업이 300ms에 나타나면 200–250ms에 사라진다. 자주 보는 애니메이션일수록 짧고 은은하게. 너무 짧은 경우보다 너무 긴 경우가 훨씬 흔하다.</p>
+<p>디자인 시스템의 길이 토큰</p>
+<table>
+<thead><tr><th>시스템</th><th>토큰</th></tr></thead>
+<tbody>
+<tr><td>IBM Carbon</td><td class="num">fast-01 70 (버튼, 토글) · fast-02 110 (페이드) · moderate-01 150 (작은 펼침, 짧은 이동) · moderate-02 240 (펼침, 토스트) · slow-01 400 (큰 펼침) · slow-02 700 (배경 어둡게)</td></tr>
+<tr><td>Material 3</td><td class="num">short1–4 50 · 100 · 150 · 200 / medium1–4 250 · 300 · 350 · 400 / long1–4 450–600 / extralong1–4 700–1000 (50·100ms 간격)</td></tr>
+</tbody></table>
+<span class="src">Laubheimer 2020 · <a href="https://carbondesignsystem.com/elements/motion/overview/" target="_blank" rel="noopener">Carbon — Motion</a> · Material 3 값은 Flutter가 M3 명세에서 생성한 상수로 확인 — <a href="https://api.flutter.dev/flutter/material/Durations-class.html" target="_blank" rel="noopener">Flutter Durations</a> (원문: <a href="https://m3.material.io/styles/motion/easing-and-duration/tokens-specs" target="_blank" rel="noopener">M3 tokens</a>)</span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>이징</h3>
+<div class="copy">
+<table>
+<thead><tr><th>곡선</th><th>쓰는 자리</th></tr></thead>
+<tbody>
+<tr><td>ease-out (감속)</td><td>기본값. 특히 들어오는 요소 — 빠르게 반응하고, 멈추며 눈이 자리를 잡는다.</td></tr>
+<tr><td>ease-in (가속)</td><td>나가는 요소 — 멀어지며 빨라진다.</td></tr>
+<tr><td>ease-in-out</td><td>나가는 요소에 가끔. 시작이 느리면 굼뜨게 느껴진다.</td></tr>
+<tr><td>linear</td><td>대체로 부자연스럽다. 진행 막대처럼 일정한 속도가 의미일 때만.</td></tr>
+</tbody></table>
+<table>
+<thead><tr><th>시스템</th><th>곡선</th></tr></thead>
+<tbody>
+<tr><td>Carbon productive</td><td class="num">standard (0.2, 0, 0.38, 0.9) · entrance (0, 0, 0.38, 0.9) · exit (0.2, 0, 1, 0.9) — 일을 하는 순간, 은은하게</td></tr>
+<tr><td>Carbon expressive</td><td class="num">standard (0.4, 0.14, 0.3, 1) · entrance (0, 0, 0.3, 1) · exit (0.4, 0.14, 1, 1) — 페이지 열기처럼 중요한 순간에만</td></tr>
+<tr><td>Material 3</td><td class="num">standard (0.2, 0, 0, 1)</td></tr>
+</tbody></table>
+<span class="src">Laubheimer 2020 · <a href="https://carbondesignsystem.com/elements/motion/overview/" target="_blank" rel="noopener">Carbon — Motion</a> · <a href="https://api.flutter.dev/flutter/material/Easing/standard-constant.html" target="_blank" rel="noopener">Flutter Easing.standard</a></span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>범위</h3>
+<div class="copy">
+<table>
+<thead><tr><th>값</th><th>맞는 경우</th></tr></thead>
+<tbody>
+<tr><td>하나만 (배타)</td><td>탭처럼 한 번에 하나를 보면 되고, 둘을 비교할 일이 없을 때. 비교하려고 탭을 오가야 한다면 탭이 아니다.</td></tr>
+<tr><td>여럿 (독립)</td><td>아코디언은 여러 개를 함께 열 수 있게 한다. 모두 펼치기 · 모두 접기를 함께 두는 것도 고려한다.</td></tr>
+</tbody></table>
+<p>누른 것과 바뀌는 것이 다르면(하나를 눌렀는데 전부 열림) 원인과 결과가 이어지지 않는다.</p>
+<span class="src">Evan Sunwall, <a href="https://www.nngroup.com/articles/tabs-used-right/" target="_blank" rel="noopener">Tabs, Used Right</a>, NN/g, 2024 · Huei-Hsin Wang, <a href="https://www.nngroup.com/articles/accordions-on-desktop/" target="_blank" rel="noopener">Accordions on Desktop</a>, NN/g, 2023</span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>유지 · 해제</h3>
+<div class="copy">
+<p>호버 · 포커스로 나타난 내용은 세 가지를 지킨다 (WCAG 1.4.13, AA).</p>
+<table>
+<tbody>
+<tr><td>닫을 수 있다</td><td>커서나 포커스를 옮기지 않고도 닫는 방법이 있다 (예: Esc).</td></tr>
+<tr><td>올라갈 수 있다</td><td>나타난 내용 위로 커서를 옮겨도 사라지지 않는다.</td></tr>
+<tr><td>머문다</td><td>트리거를 벗어나거나, 닫거나, 정보가 더는 필요 없을 때까지 보인다.</td></tr>
+</tbody></table>
+<p>커서가 트리거와 내용 모두에서 벗어난 뒤 <strong>0.5초</strong>가 지나면 닫는다. 애니메이션은 끝날 때까지 기다리게 하지 말고 취소할 수 있게 한다.</p>
+<span class="src"><a href="https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html" target="_blank" rel="noopener">WCAG 1.4.13 Content on Hover or Focus</a> · Harley 2015 · <a href="https://developer.apple.com/design/human-interface-guidelines/motion" target="_blank" rel="noopener">Apple HIG — Motion</a></span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>공간 — 덮기와 밀기</h3>
+<div class="copy">
+<table>
+<thead><tr><th>값</th><th>성격</th></tr></thead>
+<tbody>
+<tr><td>모달 (덮고 막음)</td><td>본문을 막고 응답을 받는다. 치명적 오류 · 되돌릴 수 없는 동작 경고, 진행에 꼭 필요한 입력에만. 관련 없는 정보나 결제 같은 중요한 흐름 중에는 쓰지 않는다.</td></tr>
+<tr><td>논모달 (덮지만 열어 둠)</td><td>사이드 패널처럼 본문을 계속 쓸 수 있다. 덜 끼어들지만 여전히 시선을 뺏는다.</td></tr>
+<tr><td>밀어내기 (아코디언)</td><td>맥락은 그대로지만 아래 내용이 움직인다. 이동 거리가 길수록 부드러워야 한다.</td></tr>
+</tbody></table>
+<span class="src">Therese Fessenden, <a href="https://www.nngroup.com/articles/modal-nonmodal-dialog/" target="_blank" rel="noopener">Modal &amp; Nonmodal Dialogs</a>, NN/g, 2017 · Laubheimer 2020</span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>발견 가능성</h3>
+<div class="copy">
+<ul>
+<li>숨긴 단계로 가는 트리거는 <strong>잘 보여야 하고, 이름이 그 뒤에 무엇이 있는지 정확히 알려야</strong> 한다. 자주 쓰는 것은 앞에, 가끔 쓰는 것만 뒤에.</li>
+<li>펼칠 수 있다는 표시는 <strong>꺾쇠(⌄)나 +</strong>가 가장 잘 통했다. 제목과 아이콘 모두 누를 수 있게 한다.</li>
+<li>고른 탭은 두 가지 이상으로 표시한다 (선, 굵기, 배경 중). 고르지 않은 탭도 충분히 읽혀야 한다.</li>
+<li>과제에 꼭 필요한 정보는 접은 칸이나 툴팁에 숨기지 않는다.</li>
+</ul>
+<span class="src">Jakob Nielsen, <a href="https://www.nngroup.com/articles/progressive-disclosure/" target="_blank" rel="noopener">Progressive Disclosure</a>, NN/g, 2006 · Wang 2023 · Sunwall 2024 · Alita Kendrick, <a href="https://www.nngroup.com/articles/tooltip-guidelines/" target="_blank" rel="noopener">Tooltip Guidelines</a>, NN/g, 2019</span>
+</div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>움직임 줄이기</h3>
+<div class="copy">
+<ul>
+<li>사용자의 동작으로 시작된 움직임은 끌 수 있어야 한다. 움직임이 기능 자체일 때는 예외 (WCAG 2.3.3, AAA).</li>
+<li>움직임만으로 중요한 정보를 전하지 않는다. 운영체제의 움직임 줄이기 설정을 따른다.</li>
+<li>번쩍임 · 급격한 색 변화는 발작을, 패럴랙스 · 스크롤재킹은 어지러움을 일으킬 수 있다.</li>
+</ul>
+<span class="src"><a href="https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html" target="_blank" rel="noopener">WCAG 2.3.3 Animation from Interactions</a> · Apple HIG — Motion · Laubheimer 2020</span>
+</div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-patterns">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">인터랙션의 종류</h2>
+<p class="topic-lead reveal">패턴마다 사용자가 이미 기대하는 동작이 있다 (다른 사이트에서 익힌 것). 그 기대와 정보의 성격이 맞을 때 쓴다.</p>
+<ul class="rows">
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>아코디언<span class="row-sub">Accordion</span></h3>
+<div class="copy"><p><span class="tag">기대</span>꺾쇠나 +가 있는 제목을 누르면 그 아래가 열린다.</p>
+<p><span class="tag">맞는 정보</span>필요한 게 몇 개뿐인 긴 내용, 서로 독립된 항목 (FAQ, 상품 상세), 단계가 있는 과정, 좁은 화면.</p>
+<p><span class="tag">피할 때</span>대부분을 읽어야 할 때, 내용이 적을 때, 여러 층의 위계, 제목으로 요약하기 어려울 때, 이어 읽는 글.</p>
+<span class="src">Wang 2023</span></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>탭 · 세그먼트<span class="row-sub">Tabs</span></h3>
+<div class="copy"><p><span class="tag">기대</span>같은 자리의 내용이 바뀐다. 페이지를 떠나지 않는다.</p>
+<p><span class="tag">맞는 정보</span>뚜렷하게 나뉘는 몇 개의 묶음, 짧은 이름, 기본 탭이 가장 중요할 때.</p>
+<p><span class="tag">피할 때</span>탭끼리 비교해야 할 때, 중요한 내용이 기본이 아닌 탭에 있을 때, 탭이 넘쳐 캐러셀이 될 때, 이름이 길 때.</p>
+<span class="src">Sunwall 2024</span></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>툴팁<span class="row-sub">Tooltip</span></h3>
+<div class="copy"><p><span class="tag">기대</span>잠깐 보이는 짧은 보조 설명.</p>
+<p><span class="tag">맞는 정보</span>용어 · 아이콘 설명처럼 없어도 과제를 마칠 수 있는 것.</p>
+<p><span class="tag">피할 때</span>꼭 필요한 정보. 마우스로만 열리는 툴팁 (키보드 · 터치 사용자는 못 본다). 이름을 되풀이하는 내용.</p>
+<span class="src">Kendrick 2019</span></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>모달 · 사이드 패널<span class="row-sub">Dialog</span></h3>
+<div class="copy"><p><span class="tag">기대</span>지금 자리를 떠나지 않고 상세를 보거나 답한다. 닫으면 돌아온다.</p>
+<p><span class="tag">맞는 정보</span>모달 — 꼭 답해야 하는 것. 사이드 패널(논모달) — 목록을 오가며 보는 상세.</p>
+<p><span class="tag">피할 때</span>본문을 함께 봐야 결정할 수 있을 때, 흐름과 관계없는 정보.</p>
+<span class="src">Fessenden 2017</span></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>캐러셀<span class="row-sub">Carousel</span></h3>
+<div class="copy"><p><span class="tag">기대</span>옆으로 넘겨 다음 것을 본다 — 하지만 광고처럼 보여 무시되기 쉽다.</p>
+<p><span class="tag">피할 때</span>자동 넘김. 대부분의 경우 같은 내용을 여러 줄로 늘어놓는 편이 낫다.</p>
+<span class="src">Nielsen 2013</span></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>점진적 · 단계적 공개<span class="row-sub">Disclosure</span></h3>
+<div class="copy"><p><span class="tag">점진적</span>핵심을 먼저, 부가 기능은 요청할 때. 대부분은 첫 화면에서 끝난다. 위계형 — 들어갔다 돌아온다.</p>
+<p><span class="tag">단계적</span>정해진 순서로 한 단계씩 (마법사). 뒤 단계도 똑같이 중요하고, 사용자는 끝까지 간다. 선형.</p>
+<span class="src">Nielsen 2006</span></div></li>
+
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>스크롤 연동<span class="row-sub">Scroll-driven</span></h3>
+<div class="copy"><p><span class="tag">기대</span>스크롤은 브라우저가 늘 하던 대로 움직인다. 등장 연출은 그 위에 얹힐 뿐이다.</p>
+<p><span class="tag">맞는 정보</span>순서대로 쌓이는 이야기.</p>
+<p><span class="tag">피할 때</span>사용자가 골라 읽는 정보. 스크롤 속도 · 방향을 바꾸는 스크롤재킹, 패럴랙스 (어지러움).</p>
+<span class="src">Laubheimer 2020</span></div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-questions">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">설계할 때 묻는 질문</h2>
+<p class="topic-lead reveal">위의 근거를 섹션 설계에 쓰기 위해 질문으로 바꿨다. 이 질문들은 내가 만든 것이고, 괄호 안이 근거다.</p>
+<ul class="rows">
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>정보</h3>
+<div class="copy"><ul>
+<li>사용자가 이 내용의 대부분을 읽어야 하나? → 그렇다면 숨기지 않는다. (아코디언 · 점진적 공개)</li>
+<li>항목끼리 비교해야 하나? → 하나만 열리는 방식 · 탭은 피한다. (범위)</li>
+<li>순서나 흐름이 의미인가? → 단계적 공개, 시간축. (단계적 공개)</li>
+<li>항목 사이에 관계가 있나? → 관계를 드러내는 인터랙션을 고려한다.</li>
+</ul></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>기대</h3>
+<div class="copy"><ul>
+<li>이 생김새에서 사용자는 어떤 동작을 기대하나? 페이지 안의 같은 생김새는 같은 동작인가? (패턴의 기대)</li>
+<li>누를 수 있다는 표시가 있나? 누른 결과가 0.1초 안에 보이나? (발견 가능성 · 응답 시간)</li>
+<li>누른 것과 바뀌는 것이 같은가? (범위)</li>
+</ul></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>모두에게</h3>
+<div class="copy"><ul>
+<li>터치 · 키보드로도 같은 정보를 볼 수 있나? (트리거 · WCAG 1.4.13)</li>
+<li>사용자가 요청하지 않은 변화(자동 넘김, 저절로 펼침)가 있나? (트리거 · WCAG 2.2.2)</li>
+<li>움직임 줄이기에서도 정보가 다 전달되나? (WCAG 2.3.3)</li>
+</ul></div></li>
+</ul>
+</article>
+
+<article class="topic" id="d1015-sources">
+<h2 class="topic-title reveal"><img src="assets/asterisk.png" alt="">출처</h2>
+<p class="topic-lead reveal">2026-10-15 웹 검색 후 원문을 열어 확인했다. 표시한 두 개만 원문 대신 요약 · 생성 코드로 확인.</p>
+<ul class="rows">
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>NN/g</h3>
+<div class="copy"><ul>
+<li>Nielsen, <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" target="_blank" rel="noopener">Response Times: The 3 Important Limits</a> (1993)</li>
+<li>Nielsen, <a href="https://www.nngroup.com/articles/progressive-disclosure/" target="_blank" rel="noopener">Progressive Disclosure</a> (2006)</li>
+<li>Nielsen, <a href="https://www.nngroup.com/articles/auto-forwarding/" target="_blank" rel="noopener">Auto-Forwarding Carousels and Accordions Annoy Users and Reduce Visibility</a> (2013)</li>
+<li>Harley, <a href="https://www.nngroup.com/articles/timing-exposing-content/" target="_blank" rel="noopener">Timing Guidelines for Exposing Hidden Content</a> (2015)</li>
+<li>Fessenden, <a href="https://www.nngroup.com/articles/modal-nonmodal-dialog/" target="_blank" rel="noopener">Modal &amp; Nonmodal Dialogs</a> (2017)</li>
+<li>Kendrick, <a href="https://www.nngroup.com/articles/tooltip-guidelines/" target="_blank" rel="noopener">Tooltip Guidelines</a> (2019)</li>
+<li>Laubheimer, <a href="https://www.nngroup.com/articles/animation-duration/" target="_blank" rel="noopener">Executing UX Animations: Duration and Motion Characteristics</a> (2020)</li>
+<li>Wang, <a href="https://www.nngroup.com/articles/accordions-on-desktop/" target="_blank" rel="noopener">Accordions on Desktop: When and How to Use</a> (2023)</li>
+<li>Sunwall, <a href="https://www.nngroup.com/articles/tabs-used-right/" target="_blank" rel="noopener">Tabs, Used Right</a> (2024)</li>
+</ul></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>W3C · 플랫폼</h3>
+<div class="copy"><ul>
+<li><a href="https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html" target="_blank" rel="noopener">WCAG 2.1 — 1.4.13 Content on Hover or Focus</a> (AA)</li>
+<li><a href="https://www.w3.org/WAI/WCAG21/Understanding/pause-stop-hide.html" target="_blank" rel="noopener">WCAG 2.1 — 2.2.2 Pause, Stop, Hide</a> (A)</li>
+<li><a href="https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html" target="_blank" rel="noopener">WCAG 2.1 — 2.3.3 Animation from Interactions</a> (AAA)</li>
+<li><a href="https://developer.apple.com/design/human-interface-guidelines/motion" target="_blank" rel="noopener">Apple Human Interface Guidelines — Motion</a></li>
+<li><a href="https://carbondesignsystem.com/elements/motion/overview/" target="_blank" rel="noopener">IBM Carbon — Motion</a></li>
+<li>Material 3 — <a href="https://m3.material.io/styles/motion/easing-and-duration/tokens-specs" target="_blank" rel="noopener">Easing and duration tokens</a> · 페이지가 열리지 않아 <a href="https://api.flutter.dev/flutter/material/Durations-class.html" target="_blank" rel="noopener">Flutter의 생성 상수</a>로 확인 ※</li>
+</ul></div></li>
+<li class="row reveal"><h3 class="row-title"><span class="bullet"></span>책</h3>
+<div class="copy"><ul>
+<li>Dan Saffer, <i>Microinteractions: Designing with Details</i>, O'Reilly, 2013 — 요약 자료로 확인 ※</li>
+</ul></div></li>
+</ul>
+</article>
+
+</section>
+
+</div>
+</div>
+</main>
+
+<footer class="archive-footer">
+<img src="assets/brand.png" alt="yongzu" width="58" height="27">
+<p><a href="https://yongzu.github.io/">yongzu.github.io</a></p>
+</footer>
+
+<script>
+(() => {
+  const days = [...document.querySelectorAll('.day')];
+  const tabs = document.querySelector('.date-tabs');
+  const tocList = document.querySelector('.toc ol');
+  const bar = document.querySelector('.toc-bar');
+  let spy;
+
+  // 날짜 탭: 최신 날짜가 맨 앞, 기본 선택
+  days.sort((a, b) => b.dataset.date.localeCompare(a.dataset.date));
+  days.forEach((day) => {
+    const t = document.createElement('button');
+    t.type = 'button';
+    t.className = 'date-tab';
+    t.id = `tab-${day.id}`;
+    t.setAttribute('role', 'tab');
+    t.setAttribute('aria-controls', day.id);
+    t.textContent = day.dataset.label;
+    t.addEventListener('click', () => show(day.id, true));
+    tabs.append(t);
+    day.setAttribute('aria-labelledby', t.id);
+  });
+  // 키보드: ←/→로 탭 사이를 옮긴다
+  tabs.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    const list = [...tabs.children];
+    const i = list.indexOf(document.activeElement);
+    const next = list[(i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length];
+    next.focus();
+    next.click();
+  });
+
+  function show(id, fromClick) {
+    days.forEach((day) => { day.hidden = day.id !== id; });
+    [...tabs.children].forEach((t) => {
+      const on = t.getAttribute('aria-controls') === id;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+    });
+    if (fromClick) history.replaceState(null, '', `#${id}`);
+    buildToc(document.getElementById(id));
+  }
+
+  // 목차: 고른 날짜의 섹션 제목으로 만든다. 보이는 섹션으로 잉크 막대가 옮겨 간다
+  function buildToc(day) {
+    tocList.querySelectorAll('li').forEach((li) => li.remove());
+    const topics = [...day.querySelectorAll('.topic')];
+    const links = topics.map((topic) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${topic.id}`;
+      a.textContent = topic.querySelector('.topic-title').textContent;
+      li.append(a);
+      tocList.append(li);
+      return a;
+    });
+    spy?.disconnect();
+    const mark = (a) => {
+      links.forEach((l) => l.classList.toggle('is-active', l === a));
+      bar.style.opacity = 1;
+      bar.style.height = `${a.offsetHeight}px`;
+      bar.style.transform = `translateY(${a.parentElement.offsetTop}px)`;
+    };
+    spy = new IntersectionObserver((entries) => {
+      const seen = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (seen) mark(links[topics.indexOf(seen.target)]);
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    topics.forEach((t) => spy.observe(t));
+    if (links[0]) mark(links[0]);
+  }
+
+  // 주소의 #이 날짜나 그 안의 섹션을 가리키면 그 날짜를 연다
+  const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+  const startDay = target?.closest('.day') ?? days[0];
+  show(startDay.id, false);
+  // 글꼴이 늦게 들어오면 높이가 바뀌므로, 글꼴이 준비된 뒤 한 번 더 맞춘다
+  if (target && target !== startDay) {
+    target.scrollIntoView();
+    document.fonts?.ready.then(() => target.scrollIntoView());
+  }
+
+  // 스크롤 등장
+  if (document.documentElement.classList.contains('has-reveal')) {
+    const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.dataset.reveal = 'in';
+      io.unobserve(e.target);
+    }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  }
+})();
+</script>
+</body>
+</html>
