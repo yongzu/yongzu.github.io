@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found</title>
+<script>
+  // Old site paths (/notes/..., /assets/...) now live under /SI/previous/
+  var p = location.pathname;
+  if (/^\/(notes|assets)(\/|$)/.test(p)) {
+    location.replace('/SI/previous' + p + location.search + location.hash);
+  }
+</script>
+</head>
+<body>
+<p>페이지를 찾을 수 없습니다. <a href="/SI/previous/">yongzu.github.io/SI/previous/</a></p>
+</body>
+</html>
